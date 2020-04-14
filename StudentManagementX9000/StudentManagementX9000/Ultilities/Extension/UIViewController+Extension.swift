@@ -58,12 +58,4 @@ extension UIViewController {
         }
         return scene
     }
-
-    var safeAreaInsetBottom: CGFloat {
-        var height: CGFloat = 0
-        if #available(iOS 11.0, *), let window = UIApplication.shared.keyWindow {
-            height = window.safeAreaInsets.bottom
-        }
-        return height
-    }
 }
