@@ -10,7 +10,6 @@
 		6E88202DD8955E865DB86C9C /* Pods_StudentManagementX9000.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA52576C21192947DD90DD9 /* Pods_StudentManagementX9000.framework */; };
 		71758D4F6015B56BFA8D11D7 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */; };
 		90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1172445FD1E00BDA555 /* AppDelegate.swift */; };
-		90A4C11A2445FD1E00BDA555 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1192445FD1E00BDA555 /* SceneDelegate.swift */; };
 		90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C11B2445FD1E00BDA555 /* ViewController.swift */; };
 		90A4C11F2445FD1E00BDA555 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A4C11D2445FD1E00BDA555 /* Main.storyboard */; };
 		90A4C1212445FD2100BDA555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90A4C1202445FD2100BDA555 /* Assets.xcassets */; };
@@ -69,7 +68,6 @@
 		82AE37522A76F24194DD6D54 /* Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; sourceTree = "<group>"; };
 		90A4C1142445FD1E00BDA555 /* StudentManagementX9000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudentManagementX9000.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A4C1172445FD1E00BDA555 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		90A4C1192445FD1E00BDA555 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		90A4C11B2445FD1E00BDA555 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		90A4C11E2445FD1E00BDA555 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90A4C1202445FD2100BDA555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -185,7 +183,6 @@
 			children = (
 				90A4C1482445FF3400BDA555 /* Ultilities */,
 				90A4C1172445FD1E00BDA555 /* AppDelegate.swift */,
-				90A4C1192445FD1E00BDA555 /* SceneDelegate.swift */,
 				90A4C11B2445FD1E00BDA555 /* ViewController.swift */,
 				90A4C11D2445FD1E00BDA555 /* Main.storyboard */,
 				90A4C1202445FD2100BDA555 /* Assets.xcassets */,
@@ -568,7 +565,6 @@
 				90A4C1692445FFBF00BDA555 /* NotificationHelper.swift in Sources */,
 				90A4C1552445FF8200BDA555 /* Date+Extension.swift in Sources */,
 				90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */,
-				90A4C11A2445FD1E00BDA555 /* SceneDelegate.swift in Sources */,
 				90A4C1592445FF8200BDA555 /* DateFormatter+Extension.swift in Sources */,
 				90A4C18424460A5300BDA555 /* SM01LoginViewModel.swift in Sources */,
 				90A4C1572445FF8200BDA555 /* Toolbar+Extension.swift in Sources */,
@@ -752,7 +748,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J243X8N8UC;
 				INFOPLIST_FILE = StudentManagementX9000/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -772,7 +768,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J243X8N8UC;
 				INFOPLIST_FILE = StudentManagementX9000/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
