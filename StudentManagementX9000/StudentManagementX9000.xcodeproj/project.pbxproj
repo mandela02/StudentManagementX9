@@ -17,6 +17,7 @@
 		90A4C1242445FD2100BDA555 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A4C1222445FD2100BDA555 /* LaunchScreen.storyboard */; };
 		90A4C12F2445FD2100BDA555 /* StudentManagementX9000Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C12E2445FD2100BDA555 /* StudentManagementX9000Tests.swift */; };
 		90A4C13A2445FD2100BDA555 /* StudentManagementX9000UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1392445FD2100BDA555 /* StudentManagementX9000UITests.swift */; };
+		90A4C14B2445FF6100BDA555 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C14A2445FF6100BDA555 /* String+Extension.swift */; };
 		F6C5A57BA8CEF52E03FD1A96 /* Pods_StudentManagementX9000Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7411015CB99C26E4EAF5EDC /* Pods_StudentManagementX9000Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		90A4C1352445FD2100BDA555 /* StudentManagementX9000UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StudentManagementX9000UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A4C1392445FD2100BDA555 /* StudentManagementX9000UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentManagementX9000UITests.swift; sourceTree = "<group>"; };
 		90A4C13B2445FD2100BDA555 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		90A4C14A2445FF6100BDA555 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		99FEBCCCAEFF7F40FDE5F26C /* Pods-StudentManagementX9000Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000Tests.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000Tests/Pods-StudentManagementX9000Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A462FFC695C25B86F98ACE6B /* Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6A10B63500EDB7A30859E36 /* Pods-StudentManagementX9000.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000/Pods-StudentManagementX9000.debug.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		90A4C1162445FD1E00BDA555 /* StudentManagementX9000 */ = {
 			isa = PBXGroup;
 			children = (
+				90A4C1482445FF3400BDA555 /* Ultilities */,
 				90A4C1172445FD1E00BDA555 /* AppDelegate.swift */,
 				90A4C1192445FD1E00BDA555 /* SceneDelegate.swift */,
 				90A4C11B2445FD1E00BDA555 /* ViewController.swift */,
@@ -156,6 +159,22 @@
 				90A4C13B2445FD2100BDA555 /* Info.plist */,
 			);
 			path = StudentManagementX9000UITests;
+			sourceTree = "<group>";
+		};
+		90A4C1482445FF3400BDA555 /* Ultilities */ = {
+			isa = PBXGroup;
+			children = (
+				90A4C1492445FF4900BDA555 /* Extension */,
+			);
+			path = Ultilities;
+			sourceTree = "<group>";
+		};
+		90A4C1492445FF4900BDA555 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				90A4C14A2445FF6100BDA555 /* String+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		B4CB7A1B5B8C28A1EB3B57E2 /* Frameworks */ = {
@@ -425,6 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A4C14B2445FF6100BDA555 /* String+Extension.swift in Sources */,
 				90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */,
 				90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */,
 				90A4C11A2445FD1E00BDA555 /* SceneDelegate.swift in Sources */,
