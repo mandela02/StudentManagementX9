@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIViewController {
-    
     var safeAreaInsets: UIEdgeInsets? {
         if #available(iOS 11.0, *) {
             let window = UIApplication.shared.keyWindow
@@ -19,29 +18,32 @@ extension UIViewController {
         }
         return nil
     }
-    
+
     var appDelegate: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
-    
+
     public class func vc() -> Self {
         return self.init(nibName: String(describing: self), bundle: nil)
     }
-    
+
     class func instantiate<T: UIViewController>(_: T.Type, storyboard: String) -> T {
         let storyboard = UIStoryboard(name: storyboard, bundle: nil)
-        guard let ViewController = storyboard.instantiateViewController(withIdentifier: T.className) as? T else {
+        guard let viewController = storyboard.instantiateViewController(withIdentifier: T.className) as? T else {
             fatalError("Can not instantiate viewcontroller from storyboard \(storyboard)")
         }
-        return ViewController
+        return viewController
     }
-    
+
     static func instantiateFromStoryboard(identifier: String = "") -> Self {
         return instantiateFromStoryboard(viewControllerClass: self, identifier: identifier)
     }
-    
-    private static func instantiateFromStoryboard<T: UIViewController>(viewControllerClass: T.Type, identifier: String = "", function: String = #function, line: Int = #line, file: String = #file) -> T {
-        
+
+    private static func instantiateFromStoryboard<T: UIViewController>(viewControllerClass: T.Type,
+                                                                       identifier: String = "",
+                                                                       function: String = #function,
+                                                                       line: Int = #line,
+                                                                       file: String = #file) -> T {
         var storyboardName = ""
         var controllerIdentifer = ""
         if identifier != "" {
@@ -51,7 +53,7 @@ extension UIViewController {
             storyboardName = (viewControllerClass as UIViewController.Type).className
             controllerIdentifer = storyboardName
         }
-        
+
         let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main)
         guard let scene = storyboard.instantiateViewController(withIdentifier: controllerIdentifer) as? T else {
             fatalError("ViewController with identifier \(storyboardName), not found in \(storyboardName) Storyboard.\nFile : \(file) \nLine Number : \(line)")

@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 class SM01LoginViewController: BaseViewController {
-    
+
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -24,11 +24,11 @@ class SM01LoginViewController: BaseViewController {
         setupView()
         setupLanguage()
     }
-    
+
     override func configureLocalizedStrings() {
         setupLanguage()
     }
-    
+
     override func configureObservers() {
         loginButton.isEnabled = false
         viewModel.isUserAccountValid
@@ -47,7 +47,7 @@ class SM01LoginViewController: BaseViewController {
             self.loginButton.isEnabled = status == .online
         }).disposed(by: disposeBag)
     }
-    
+
     private func setupView() {
         passwordView.layer.cornerRadius = 5
         passwordView.layer.borderWidth = 1
@@ -59,20 +59,21 @@ class SM01LoginViewController: BaseViewController {
         emailTextField.layer.borderColor = UIColor.lightGray.cgColor
         emailTextField.layer.masksToBounds = true
         loginButton.setDisable()
-        
+
         emailTextField.becomeFirstResponder()
     }
-    
+
     private func setupLanguage() {
 //        emailTextField.placeholder = LocalizedStrings.sc01EmailLabelPlaceHolder
 //        passwordTextField.placeholder = LocalizedStrings.sc01PasswordLabelPlaceHolder
 //        loginButton.setTitle(LocalizedStrings.sc01LoginLoginButtonTitle, for: .normal)
     }
-    
+
     @IBAction func loginButtonTapped(_ sender: Any) {
+        let photoViewController = SM02PhotoViewController.instantiateFromStoryboard()
+        pushViewController(photoViewController)
     }
 
-    
     @IBAction func hidePasswordButtonTapped(_ sender: Any) {
         passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
     }

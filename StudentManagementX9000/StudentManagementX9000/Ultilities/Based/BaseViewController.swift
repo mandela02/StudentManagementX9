@@ -27,7 +27,7 @@ class BaseViewController: UIViewController {
 
     func configureObservers() {}
 
-    func pushAndHideBottomBar(_ viewController: UIViewController) {
+    func pushViewController(_ viewController: UIViewController) {
         viewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(viewController, animated: true)
     }

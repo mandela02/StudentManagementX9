@@ -19,7 +19,7 @@ enum ConnectionStatus {
 class InternetHelper {
     static let shared = InternetHelper()
 
-    private let reachability = try! Reachability()
+    private let reachability = try? Reachability()
 
     var connectionStatus: BehaviorRelay<ConnectionStatus>
         = BehaviorRelay(value: ConnectionStatus.online)
@@ -35,6 +35,9 @@ class InternetHelper {
     }
 
     private func createObservers() {
+        guard let reachability = reachability else {
+            return
+        }
         NotificationCenter
             .default
             .addObserver(self, selector: #selector(reachabilityChanged(note:)),

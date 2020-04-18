@@ -18,5 +18,5 @@ extension UIImage {
         UIGraphicsEndImageContext()
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
-    }    
+    }
 }

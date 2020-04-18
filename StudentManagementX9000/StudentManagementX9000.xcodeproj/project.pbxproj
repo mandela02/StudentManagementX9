@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6E88202DD8955E865DB86C9C /* Pods_StudentManagementX9000.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA52576C21192947DD90DD9 /* Pods_StudentManagementX9000.framework */; };
 		71758D4F6015B56BFA8D11D7 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */; };
+		90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */; };
+		90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90987D69244B45F500411B0E /* SM02PhotoViewController.swift */; };
 		90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1172445FD1E00BDA555 /* AppDelegate.swift */; };
 		90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C11B2445FD1E00BDA555 /* ViewController.swift */; };
 		90A4C11F2445FD1E00BDA555 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A4C11D2445FD1E00BDA555 /* Main.storyboard */; };
@@ -66,6 +68,8 @@
 /* Begin PBXFileReference section */
 		46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudentManagementX9000_StudentManagementX9000UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AE37522A76F24194DD6D54 /* Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; sourceTree = "<group>"; };
+		90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM02PhotoViewController.storyboard; sourceTree = "<group>"; };
+		90987D69244B45F500411B0E /* SM02PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewController.swift; sourceTree = "<group>"; };
 		90A4C1142445FD1E00BDA555 /* StudentManagementX9000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudentManagementX9000.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A4C1172445FD1E00BDA555 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90A4C11B2445FD1E00BDA555 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +160,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		90987D66244B43B800411B0E /* SM02Photo */ = {
+			isa = PBXGroup;
+			children = (
+				90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */,
+				90987D69244B45F500411B0E /* SM02PhotoViewController.swift */,
+			);
+			path = SM02Photo;
+			sourceTree = "<group>";
+		};
 		90A4C10B2445FD1E00BDA555 = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +226,7 @@
 		90A4C1482445FF3400BDA555 /* Ultilities */ = {
 			isa = PBXGroup;
 			children = (
+				90987D66244B43B800411B0E /* SM02Photo */,
 				90A4C17C244604DD00BDA555 /* Based */,
 				90A4C1772446032100BDA555 /* SM01Login */,
 				90A4C1492445FF4900BDA555 /* Extension */,
@@ -298,7 +312,7 @@
 				90A4C1112445FD1E00BDA555 /* Frameworks */,
 				90A4C1122445FD1E00BDA555 /* Resources */,
 				81290873F5263B71B621C126 /* [CP] Embed Pods Frameworks */,
-				90A4C1472445FE8D00BDA555 /* ShellScript */,
+				90987D65244B427200411B0E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -398,6 +412,7 @@
 			files = (
 				90A4C1242445FD2100BDA555 /* LaunchScreen.storyboard in Resources */,
 				90A4C1792446033100BDA555 /* SM01LoginViewController.storyboard in Resources */,
+				90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */,
 				90A4C1212445FD2100BDA555 /* Assets.xcassets in Resources */,
 				90A4C11F2445FD1E00BDA555 /* Main.storyboard in Resources */,
 			);
@@ -476,7 +491,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		90A4C1472445FE8D00BDA555 /* ShellScript */ = {
+		90987D65244B427200411B0E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -491,7 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		BD33897016DEAA584375E977 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -545,6 +560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90A4C14B2445FF6100BDA555 /* String+Extension.swift in Sources */,
+				90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */,
 				90A4C15B2445FF9500BDA555 /* Calendar+Extension.swift in Sources */,
 				90A4C1582445FF8200BDA555 /* Button+Extension.swift in Sources */,
 				90A4C17B2446041C00BDA555 /* SM01LoginViewController.swift in Sources */,

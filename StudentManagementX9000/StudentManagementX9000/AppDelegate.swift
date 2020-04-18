@@ -13,7 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let loginViewController = SM01LoginViewController.instantiateFromStoryboard()
         let rootNavigationViewController = UINavigationController(rootViewController: loginViewController)
@@ -22,4 +23,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-

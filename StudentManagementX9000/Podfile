@@ -15,6 +15,7 @@ target 'StudentManagementX9000' do
     pod 'RxDataSources'
     pod 'RxRealm'
     pod 'ReachabilitySwift'
+    pod 'SwiftLint'
 
   # Pods for StudentManagementX9000
 
