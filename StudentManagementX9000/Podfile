@@ -16,6 +16,7 @@ target 'StudentManagementX9000' do
     pod 'RxRealm'
     pod 'ReachabilitySwift'
     pod 'SwiftLint'
+    pod 'ProjectOxfordFace'
 
   # Pods for StudentManagementX9000
 

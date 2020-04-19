@@ -286,6 +286,7 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - ProjectOxfordFace (1.4.1)
   - PromisesObjC (1.2.8)
   - ReachabilitySwift (5.0.0)
   - Realm (4.4.0):
@@ -314,6 +315,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Firestore
   - Firebase/Storage
+  - ProjectOxfordFace
   - ReachabilitySwift
   - RealmSwift
   - RxCocoa
@@ -347,6 +349,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - ProjectOxfordFace
     - PromisesObjC
     - ReachabilitySwift
     - Realm
@@ -382,6 +385,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  ProjectOxfordFace: fa7d7adbc9a11203be61a6a80511101b5dbf6ce4
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Realm: e125f464884cda953ebefe70c671b75b03b81b9b
@@ -393,6 +397,6 @@ SPEC CHECKSUMS:
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
 
-PODFILE CHECKSUM: 0f56a93ef5d2bbec9005d878f49701575642aae6
+PODFILE CHECKSUM: 7881ac21ea304177c20cb5606391894b1854cc37
 
 COCOAPODS: 1.9.1

@@ -18,3 +18,8 @@ struct Constants {
     static let minDate = DateFormatterHelper.date(from: "1/1/2000") ?? Date()
     static let maxDate = DateFormatterHelper.date(from: "31/12/2077") ?? Date()
 }
+
+struct FaceKey {
+    static let subscriptionKey = "fee82920753747ab9cbae785bd83a389"
+    static let endPoint = "https://eastasia.api.cognitive.microsoft.com/face/v1.0/"
+}

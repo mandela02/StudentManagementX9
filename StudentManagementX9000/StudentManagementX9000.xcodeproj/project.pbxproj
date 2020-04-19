@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6E88202DD8955E865DB86C9C /* Pods_StudentManagementX9000.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA52576C21192947DD90DD9 /* Pods_StudentManagementX9000.framework */; };
 		71758D4F6015B56BFA8D11D7 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */; };
+		9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D2244B545000145CC7 /* FaceApiHelper.swift */; };
+		9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */; };
+		9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */; };
 		90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */; };
 		90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90987D69244B45F500411B0E /* SM02PhotoViewController.swift */; };
 		90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1172445FD1E00BDA555 /* AppDelegate.swift */; };
@@ -68,6 +71,9 @@
 /* Begin PBXFileReference section */
 		46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudentManagementX9000_StudentManagementX9000UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AE37522A76F24194DD6D54 /* Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; sourceTree = "<group>"; };
+		9023A7D2244B545000145CC7 /* FaceApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceApiHelper.swift; sourceTree = "<group>"; };
+		9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionCell.swift; sourceTree = "<group>"; };
+		9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewModel.swift; sourceTree = "<group>"; };
 		90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM02PhotoViewController.storyboard; sourceTree = "<group>"; };
 		90987D69244B45F500411B0E /* SM02PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewController.swift; sourceTree = "<group>"; };
 		90A4C1142445FD1E00BDA555 /* StudentManagementX9000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudentManagementX9000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,6 +171,8 @@
 			children = (
 				90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */,
 				90987D69244B45F500411B0E /* SM02PhotoViewController.swift */,
+				9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */,
+				9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */,
 			);
 			path = SM02Photo;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 				90A4C1632445FFBE00BDA555 /* NotificationHelper.swift */,
 				90A4C1672445FFBF00BDA555 /* ProgressHelper.swift */,
 				90A4C1682445FFBF00BDA555 /* StringHelper.swift */,
+				9023A7D2244B545000145CC7 /* FaceApiHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -570,10 +579,12 @@
 				90A4C1612445FF9E00BDA555 /* Constants.swift in Sources */,
 				90A4C1562445FF8200BDA555 /* UIView+Extension.swift in Sources */,
 				90A4C1532445FF8200BDA555 /* UIImage+Extension.swift in Sources */,
+				9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */,
 				90A4C182244604DD00BDA555 /* BaseTableViewController.swift in Sources */,
 				90A4C180244604DD00BDA555 /* BaseCollectionViewController.swift in Sources */,
 				90A4C16D2445FFBF00BDA555 /* ProgressHelper.swift in Sources */,
 				90A4C1542445FF8200BDA555 /* UIColor+Extension.swift in Sources */,
+				9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */,
 				90A4C174244600A500BDA555 /* NSObject+Extension.swift in Sources */,
 				90A4C16C2445FFBF00BDA555 /* DateHelper.swift in Sources */,
 				90A4C176244600AE00BDA555 /* UIViewController+Extension.swift in Sources */,
@@ -588,6 +599,7 @@
 				90A4C16E2445FFBF00BDA555 /* StringHelper.swift in Sources */,
 				90A4C16B2445FFBF00BDA555 /* InternetHelper.swift in Sources */,
 				90A4C16A2445FFBF00BDA555 /* ImageHelper.swift in Sources */,
+				9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

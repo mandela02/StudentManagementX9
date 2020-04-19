@@ -70,4 +70,8 @@ extension UIView {
             layer.masksToBounds = newValue > 0
         }
     }
+
+    func removeAllSubviews() {
+        self.subviews.forEach({ $0.removeFromSuperview() })
+    }
 }

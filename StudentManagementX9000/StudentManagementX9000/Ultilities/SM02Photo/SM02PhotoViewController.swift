@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxDataSources
 
 class SM02PhotoViewController: BaseViewController {
+
+    private let reuseIdentifier = "FaceCell"
 
     @IBOutlet weak var openGalleryButton: UIButton!
     @IBOutlet weak var openCameraButton: UIButton!
@@ -18,14 +22,34 @@ class SM02PhotoViewController: BaseViewController {
 
     @IBOutlet weak var personListTableView: UITableView!
 
+    private let disposeBag = DisposeBag()
+
+    let faceHelper = FaceApiHelper()
+    let viewModel = SM02PhotoViewModel()
+
     override func configureView() {
         openCameraButton.setTitle("open Camera", for: .normal)
         openGalleryButton.setTitle("open Gallery", for: .normal)
         noImageLabel.text = "No Image Selected"
         noImageLabel.setBorder(color: .black, thickness: 1.0)
         personListTableView.setBorder(color: .black, thickness: 1.0)
+        faceHelper.delegate = self
+        self.navigationItem.setHidesBackButton(true, animated: false)
     }
-    
+
+    override func configureObservers() {
+        initTableView()
+        viewModel.faceDataList.subscribe(onNext: { [weak self] models in
+            guard let self = self else { return }
+            for model in models {
+                if let image = self.imageView.image,
+                    let rect = model.rect {
+                    self.imageView.image = image.drawRectangleOnImage(rect: rect)
+                }
+            }
+            }).disposed(by: disposeBag)
+    }
+
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -43,6 +67,24 @@ class SM02PhotoViewController: BaseViewController {
     }
 }
 
+extension SM02PhotoViewController {
+    private func initTableView() {
+        let datasource = RxTableViewSectionedReloadDataSource<FaceSectionModel>(configureCell: { [weak self] _, _, indexPath, sectionModel -> UITableViewCell in
+            guard let self = self else { return UITableViewCell() }
+            if let cell = self.personListTableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier,
+                                                                     for: indexPath) as? FaceDetectionCell {
+                cell.configureCell(with: sectionModel)
+                return cell
+            }
+            return UITableViewCell()
+        })
+        viewModel
+            .faceResult
+            .bind(to: personListTableView.rx.items(dataSource: datasource))
+            .disposed(by: disposeBag)
+    }
+}
+
 extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -52,5 +94,12 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         noImageLabel.isHidden = true
         imageView.image = image
         picker.dismiss(animated: true, completion: nil)
+        faceHelper.detectFace(image: image)
+    }
+}
+
+extension SM02PhotoViewController: FaceApiDelegate {
+    func didFinishDetection(models: [FaceModel]) {
+        viewModel.faceDataList.accept(models)
     }
 }

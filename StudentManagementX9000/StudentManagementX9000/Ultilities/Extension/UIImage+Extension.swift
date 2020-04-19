@@ -19,4 +19,26 @@ extension UIImage {
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
+
+    func drawRectangleOnImage(rect: CGRect) -> UIImage? {
+        let imageSize = size
+        let scale: CGFloat = 0
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, scale)
+        let context = UIGraphicsGetCurrentContext()
+
+        draw(at: CGPoint.zero)
+
+        let path = CGPath(rect: rect, transform: nil)
+
+        UIColor.red.setStroke()
+
+        if let context = context {
+            context.addPath(path)
+            context.drawPath(using: .stroke)
+        }
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 }
