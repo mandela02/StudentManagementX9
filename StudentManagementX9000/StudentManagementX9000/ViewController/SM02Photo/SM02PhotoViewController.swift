@@ -36,21 +36,20 @@ class SM02PhotoViewController: BaseViewController {
         noImageLabel.text = "No Image Selected"
         noImageLabel.setBorder(color: .black, thickness: 1.0)
         personListTableView.setBorder(color: .black, thickness: 1.0)
-        FaceApiHelper.shared.delegate = self
         self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
     override func configureObservers() {
         initTableView()
-        viewModel.faceDataList.subscribe(onNext: { [weak self] models in
-            guard let self = self else { return }
-            for model in models {
-                if let image = self.imageView.image,
-                    let rect = model.rect {
-                    self.imageView.image = image.drawRectangleOnImage(rect: rect)
-                }
-            }
-            }).disposed(by: disposeBag)
+//        viewModel.faceDataList.subscribe(onNext: { [weak self] models in
+//            guard let self = self else { return }
+//            for model in models {
+//                if let image = self.imageView.image,
+//                    let rect = model.rect {
+//                    self.imageView.image = image.drawRectangleOnImage(rect: rect)
+//                }
+//            }
+//        }).disposed(by: disposeBag)
     }
 
     private func openImagePicker(source: UIImagePickerController.SourceType) {
@@ -97,12 +96,11 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         noImageLabel.isHidden = true
         imageView.image = image
         picker.dismiss(animated: true, completion: nil)
-        FaceApiHelper.shared.detectFace(image: image)
-    }
-}
-
-extension SM02PhotoViewController: FaceApiDelegate {
-    func didFinishDetection(models: [FaceModel]) {
-        viewModel.faceDataList.accept(models)
+        FaceApiHelper.shared.detect(image: image).subscribe(onNext: { faceCollection in
+            guard let faceCollection = faceCollection else { return }
+            FaceApiHelper.shared.identification(with: faceCollection).subscribe(onNext: { identificationResults in
+                self.viewModel.faceDataList.accept(identificationResults)
+            }).disposed(by: self.disposeBag)
+        }).disposed(by: disposeBag)
     }
 }

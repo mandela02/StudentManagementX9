@@ -26,10 +26,10 @@ class FaceDetectionCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configureCell(with model: FaceModel) {
-        faceImageView.image = model.faceImage
-        genderLabel.text = model.gender
-        emotionLabel.text = model.emotion
-        ageLabel.text = model.age
+    func configureCell(with model: IdentificationResult) {
+        faceImageView.image = UIImage(named: "emptyAvatar")
+        genderLabel.text = model.person.name
+        emotionLabel.text = model.person.personId
+        ageLabel.text = "confidence \(model.confidence)"
     }
 }

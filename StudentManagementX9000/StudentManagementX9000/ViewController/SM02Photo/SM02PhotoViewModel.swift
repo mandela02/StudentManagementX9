@@ -13,18 +13,18 @@ import RxCocoa
 
 struct FaceSectionModel {
     var header: String
-    var items: [FaceModel]
+    var items: [IdentificationResult]
 }
 
 extension FaceSectionModel: SectionModelType {
-    init(original: FaceSectionModel, items: [FaceModel]) {
+    init(original: FaceSectionModel, items: [IdentificationResult]) {
         self = original
         self.items = items
     }
 }
 
 class SM02PhotoViewModel {
-    var faceDataList: BehaviorRelay<[FaceModel]> = BehaviorRelay(value: [])
+    var faceDataList: BehaviorRelay<[IdentificationResult]> = BehaviorRelay(value: [])
     var faceResult: BehaviorRelay<[FaceSectionModel]> = BehaviorRelay(value: [])
 
     private let disposeBag = DisposeBag()
