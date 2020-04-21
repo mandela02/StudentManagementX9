@@ -70,8 +70,8 @@ class SM01LoginViewController: BaseViewController {
     }
 
     @IBAction func loginButtonTapped(_ sender: Any) {
-        let photoViewController = SM02PhotoViewController.instantiateFromStoryboard()
-        pushViewController(photoViewController)
+        let tabBarController = TabBarController.instantiateFromStoryboard()
+        pushViewController(tabBarController)
     }
 
     @IBAction func hidePasswordButtonTapped(_ sender: Any) {

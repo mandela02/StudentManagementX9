@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--New Person View Controller-->
+        <scene sceneID="nJH-8y-5P2">
+            <objects>
+                <viewController restorationIdentifier="SM04NewPersonViewController" storyboardIdentifier="SM04NewPersonViewController" id="ROd-2e-t6f" customClass="SM04NewPersonViewController" customModule="StudentManagementX9000" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cys-Uc-VEU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bZc-yb-LeE">
+                                <rect key="frame" x="10" y="54" width="394" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Student Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WR9-M0-qnS">
+                                        <rect key="frame" x="0.0" y="0.0" width="110" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9vT-QG-cUO">
+                                        <rect key="frame" x="130" y="0.0" width="264" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Il1-7e-1vZ"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NX6-BD-8Od">
+                                <rect key="frame" x="10" y="802" width="394" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqs-7i-AoD">
+                                        <rect key="frame" x="0.0" y="0.0" width="187" height="50"/>
+                                        <state key="normal" title="Pick Image"/>
+                                        <connections>
+                                            <action selector="pickImageButtonPressed:" destination="ROd-2e-t6f" eventType="touchUpInside" id="4jq-g7-og3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcd-Kc-ucA">
+                                        <rect key="frame" x="207" y="0.0" width="187" height="50"/>
+                                        <state key="normal" title="Save"/>
+                                        <connections>
+                                            <action selector="saveButtonPressed:" destination="ROd-2e-t6f" eventType="touchUpInside" id="eFL-EW-fQq"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="NgK-1E-fZz"/>
+                                </constraints>
+                            </stackView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KQK-Yj-C6P">
+                                <rect key="frame" x="10" y="114" width="394" height="678"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="paC-xj-Vbx">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewPersonCell" id="EKf-d4-cJN" customClass="SM04NewPersionCollectionViewCell" customModule="StudentManagementX9000" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Mu8-TM-F4H">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eDj-Bn-nub">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="eDj-Bn-nub" secondAttribute="bottom" id="1wy-d2-m67"/>
+                                                <constraint firstItem="eDj-Bn-nub" firstAttribute="top" secondItem="Mu8-TM-F4H" secondAttribute="top" id="l2y-vw-qjG"/>
+                                                <constraint firstAttribute="trailing" secondItem="eDj-Bn-nub" secondAttribute="trailing" id="m4L-TE-yff"/>
+                                                <constraint firstItem="eDj-Bn-nub" firstAttribute="leading" secondItem="Mu8-TM-F4H" secondAttribute="leading" id="r4s-KP-LP9"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="imageView" destination="eDj-Bn-nub" id="seB-Dw-Xfm"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="NX6-BD-8Od" firstAttribute="leading" secondItem="3Km-nO-3dv" secondAttribute="leading" constant="10" id="Bac-mJ-M4Q"/>
+                            <constraint firstItem="KQK-Yj-C6P" firstAttribute="leading" secondItem="3Km-nO-3dv" secondAttribute="leading" constant="10" id="Hxm-2t-3Kv"/>
+                            <constraint firstItem="NX6-BD-8Od" firstAttribute="centerX" secondItem="cys-Uc-VEU" secondAttribute="centerX" id="Mcf-MP-KjZ"/>
+                            <constraint firstItem="bZc-yb-LeE" firstAttribute="leading" secondItem="3Km-nO-3dv" secondAttribute="leading" constant="10" id="V7q-a9-mAl"/>
+                            <constraint firstItem="3Km-nO-3dv" firstAttribute="trailing" secondItem="KQK-Yj-C6P" secondAttribute="trailing" constant="10" id="fIe-lg-TN3"/>
+                            <constraint firstItem="3Km-nO-3dv" firstAttribute="bottom" secondItem="NX6-BD-8Od" secondAttribute="bottom" constant="10" id="h0S-72-MlL"/>
+                            <constraint firstItem="KQK-Yj-C6P" firstAttribute="top" secondItem="bZc-yb-LeE" secondAttribute="bottom" constant="10" id="n8C-hI-xA1"/>
+                            <constraint firstItem="3Km-nO-3dv" firstAttribute="trailing" secondItem="bZc-yb-LeE" secondAttribute="trailing" constant="10" id="nr8-Yy-bdc"/>
+                            <constraint firstItem="bZc-yb-LeE" firstAttribute="top" secondItem="3Km-nO-3dv" secondAttribute="top" constant="10" id="oSi-0J-MqW"/>
+                            <constraint firstItem="NX6-BD-8Od" firstAttribute="top" secondItem="KQK-Yj-C6P" secondAttribute="bottom" constant="10" id="qTM-Lh-46C"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3Km-nO-3dv"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageCollectionView" destination="KQK-Yj-C6P" id="O84-9C-6FN"/>
+                        <outlet property="pickImageButton" destination="Uqs-7i-AoD" id="Hfd-gT-ftr"/>
+                        <outlet property="saveButton" destination="bcd-Kc-ucA" id="CGg-iV-zcS"/>
+                        <outlet property="studentNameTextField" destination="9vT-QG-cUO" id="6AQ-SX-pj5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BFe-Qo-0ah" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-42" y="147"/>
+        </scene>
+    </scenes>
+</document>

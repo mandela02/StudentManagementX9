@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6E88202DD8955E865DB86C9C /* Pods_StudentManagementX9000.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA52576C21192947DD90DD9 /* Pods_StudentManagementX9000.framework */; };
 		71758D4F6015B56BFA8D11D7 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */; };
+		90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */; };
+		90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */; };
+		90085E54244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */; };
 		9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D2244B545000145CC7 /* FaceApiHelper.swift */; };
 		9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */; };
 		9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */; };
@@ -48,6 +51,13 @@
 		90A4C181244604DD00BDA555 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C17E244604DD00BDA555 /* BaseViewController.swift */; };
 		90A4C182244604DD00BDA555 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C17F244604DD00BDA555 /* BaseTableViewController.swift */; };
 		90A4C18424460A5300BDA555 /* SM01LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C18324460A5300BDA555 /* SM01LoginViewModel.swift */; };
+		90B55D9D244C42CA0035D645 /* TabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B55D9C244C42CA0035D645 /* TabBarController.storyboard */; };
+		90B55D9F244C433B0035D645 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B55D9E244C433B0035D645 /* TabBarController.swift */; };
+		90B55DA3244C46ED0035D645 /* SM03TrainGroupViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B55DA2244C46ED0035D645 /* SM03TrainGroupViewController.storyboard */; };
+		90B55DA5244C4C970035D645 /* SM03TrainGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B55DA4244C4C970035D645 /* SM03TrainGroupViewController.swift */; };
+		90B55DA8244CB84A0035D645 /* SM04NewPersonViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B55DA7244CB84A0035D645 /* SM04NewPersonViewController.storyboard */; };
+		90B55DAB244CBA270035D645 /* SM04NewPersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B55DAA244CBA270035D645 /* SM04NewPersonViewController.swift */; };
+		90B55DAD244CBB5C0035D645 /* SM04NewPersonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B55DAC244CBB5C0035D645 /* SM04NewPersonViewModel.swift */; };
 		F6C5A57BA8CEF52E03FD1A96 /* Pods_StudentManagementX9000Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7411015CB99C26E4EAF5EDC /* Pods_StudentManagementX9000Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +81,9 @@
 /* Begin PBXFileReference section */
 		46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudentManagementX9000_StudentManagementX9000UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AE37522A76F24194DD6D54 /* Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; sourceTree = "<group>"; };
+		90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupViewModel.swift; sourceTree = "<group>"; };
+		90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupCollectionViewCell.swift; sourceTree = "<group>"; };
+		90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM04NewPersionCollectionViewCell.swift; sourceTree = "<group>"; };
 		9023A7D2244B545000145CC7 /* FaceApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceApiHelper.swift; sourceTree = "<group>"; };
 		9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionCell.swift; sourceTree = "<group>"; };
 		9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewModel.swift; sourceTree = "<group>"; };
@@ -116,6 +129,13 @@
 		90A4C17E244604DD00BDA555 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		90A4C17F244604DD00BDA555 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		90A4C18324460A5300BDA555 /* SM01LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM01LoginViewModel.swift; sourceTree = "<group>"; };
+		90B55D9C244C42CA0035D645 /* TabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarController.storyboard; sourceTree = "<group>"; };
+		90B55D9E244C433B0035D645 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		90B55DA2244C46ED0035D645 /* SM03TrainGroupViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM03TrainGroupViewController.storyboard; sourceTree = "<group>"; };
+		90B55DA4244C4C970035D645 /* SM03TrainGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupViewController.swift; sourceTree = "<group>"; };
+		90B55DA7244CB84A0035D645 /* SM04NewPersonViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM04NewPersonViewController.storyboard; sourceTree = "<group>"; };
+		90B55DAA244CBA270035D645 /* SM04NewPersonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM04NewPersonViewController.swift; sourceTree = "<group>"; };
+		90B55DAC244CBB5C0035D645 /* SM04NewPersonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM04NewPersonViewModel.swift; sourceTree = "<group>"; };
 		99FEBCCCAEFF7F40FDE5F26C /* Pods-StudentManagementX9000Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000Tests.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000Tests/Pods-StudentManagementX9000Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A462FFC695C25B86F98ACE6B /* Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6A10B63500EDB7A30859E36 /* Pods-StudentManagementX9000.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000.debug.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000/Pods-StudentManagementX9000.debug.xcconfig"; sourceTree = "<group>"; };
@@ -202,6 +222,7 @@
 		90A4C1162445FD1E00BDA555 /* StudentManagementX9000 */ = {
 			isa = PBXGroup;
 			children = (
+				90B55DA0244C43BC0035D645 /* ViewController */,
 				90A4C1482445FF3400BDA555 /* Ultilities */,
 				90A4C1172445FD1E00BDA555 /* AppDelegate.swift */,
 				90A4C11B2445FD1E00BDA555 /* ViewController.swift */,
@@ -234,9 +255,6 @@
 		90A4C1482445FF3400BDA555 /* Ultilities */ = {
 			isa = PBXGroup;
 			children = (
-				90987D66244B43B800411B0E /* SM02Photo */,
-				90A4C17C244604DD00BDA555 /* Based */,
-				90A4C1772446032100BDA555 /* SM01Login */,
 				90A4C1492445FF4900BDA555 /* Extension */,
 				90A4C1622445FFA900BDA555 /* Helper */,
 				90A4C15D2445FF9E00BDA555 /* Settings.swift */,
@@ -297,6 +315,50 @@
 				90A4C17F244604DD00BDA555 /* BaseTableViewController.swift */,
 			);
 			path = Based;
+			sourceTree = "<group>";
+		};
+		90B55D9B244C42BD0035D645 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				90B55D9C244C42CA0035D645 /* TabBarController.storyboard */,
+				90B55D9E244C433B0035D645 /* TabBarController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		90B55DA0244C43BC0035D645 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				90B55DA6244CB80B0035D645 /* SM04NewPerson */,
+				90B55DA1244C45FB0035D645 /* SM03TrainGroup */,
+				90B55D9B244C42BD0035D645 /* TabBar */,
+				90A4C1772446032100BDA555 /* SM01Login */,
+				90987D66244B43B800411B0E /* SM02Photo */,
+				90A4C17C244604DD00BDA555 /* Based */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		90B55DA1244C45FB0035D645 /* SM03TrainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				90B55DA2244C46ED0035D645 /* SM03TrainGroupViewController.storyboard */,
+				90B55DA4244C4C970035D645 /* SM03TrainGroupViewController.swift */,
+				90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */,
+				90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */,
+			);
+			path = SM03TrainGroup;
+			sourceTree = "<group>";
+		};
+		90B55DA6244CB80B0035D645 /* SM04NewPerson */ = {
+			isa = PBXGroup;
+			children = (
+				90B55DA7244CB84A0035D645 /* SM04NewPersonViewController.storyboard */,
+				90B55DAA244CBA270035D645 /* SM04NewPersonViewController.swift */,
+				90B55DAC244CBB5C0035D645 /* SM04NewPersonViewModel.swift */,
+				90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */,
+			);
+			path = SM04NewPerson;
 			sourceTree = "<group>";
 		};
 		B4CB7A1B5B8C28A1EB3B57E2 /* Frameworks */ = {
@@ -419,11 +481,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90B55D9D244C42CA0035D645 /* TabBarController.storyboard in Resources */,
+				90B55DA8244CB84A0035D645 /* SM04NewPersonViewController.storyboard in Resources */,
 				90A4C1242445FD2100BDA555 /* LaunchScreen.storyboard in Resources */,
 				90A4C1792446033100BDA555 /* SM01LoginViewController.storyboard in Resources */,
 				90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */,
 				90A4C1212445FD2100BDA555 /* Assets.xcassets in Resources */,
 				90A4C11F2445FD1E00BDA555 /* Main.storyboard in Resources */,
+				90B55DA3244C46ED0035D645 /* SM03TrainGroupViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,11 +633,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90B55DAD244CBB5C0035D645 /* SM04NewPersonViewModel.swift in Sources */,
 				90A4C14B2445FF6100BDA555 /* String+Extension.swift in Sources */,
 				90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */,
 				90A4C15B2445FF9500BDA555 /* Calendar+Extension.swift in Sources */,
 				90A4C1582445FF8200BDA555 /* Button+Extension.swift in Sources */,
 				90A4C17B2446041C00BDA555 /* SM01LoginViewController.swift in Sources */,
+				90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */,
 				90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */,
 				90A4C181244604DD00BDA555 /* BaseViewController.swift in Sources */,
 				90A4C1602445FF9E00BDA555 /* Settings.swift in Sources */,
@@ -582,19 +649,24 @@
 				9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */,
 				90A4C182244604DD00BDA555 /* BaseTableViewController.swift in Sources */,
 				90A4C180244604DD00BDA555 /* BaseCollectionViewController.swift in Sources */,
+				90085E54244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift in Sources */,
 				90A4C16D2445FFBF00BDA555 /* ProgressHelper.swift in Sources */,
 				90A4C1542445FF8200BDA555 /* UIColor+Extension.swift in Sources */,
+				90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */,
 				9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */,
 				90A4C174244600A500BDA555 /* NSObject+Extension.swift in Sources */,
 				90A4C16C2445FFBF00BDA555 /* DateHelper.swift in Sources */,
 				90A4C176244600AE00BDA555 /* UIViewController+Extension.swift in Sources */,
+				90B55DA5244C4C970035D645 /* SM03TrainGroupViewController.swift in Sources */,
 				90A4C15F2445FF9E00BDA555 /* Strings.swift in Sources */,
 				90A4C1692445FFBF00BDA555 /* NotificationHelper.swift in Sources */,
 				90A4C1552445FF8200BDA555 /* Date+Extension.swift in Sources */,
 				90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */,
+				90B55D9F244C433B0035D645 /* TabBarController.swift in Sources */,
 				90A4C1592445FF8200BDA555 /* DateFormatter+Extension.swift in Sources */,
 				90A4C18424460A5300BDA555 /* SM01LoginViewModel.swift in Sources */,
 				90A4C1572445FF8200BDA555 /* Toolbar+Extension.swift in Sources */,
+				90B55DAB244CBA270035D645 /* SM04NewPersonViewController.swift in Sources */,
 				90A4C1702446000300BDA555 /* DateFormatterHelper.swift in Sources */,
 				90A4C16E2445FFBF00BDA555 /* StringHelper.swift in Sources */,
 				90A4C16B2445FFBF00BDA555 /* InternetHelper.swift in Sources */,

@@ -19,7 +19,9 @@ struct Constants {
     static let maxDate = DateFormatterHelper.date(from: "31/12/2077") ?? Date()
 }
 
-struct FaceKey {
+struct FaceApi {
     static let subscriptionKey = "fee82920753747ab9cbae785bd83a389"
     static let endPoint = "https://eastasia.api.cognitive.microsoft.com/face/v1.0/"
+    static let studentGroupName = "Student Group"
+    static let studentGroupId = "student_groud_id"
 }

@@ -24,8 +24,11 @@ class SM02PhotoViewController: BaseViewController {
 
     private let disposeBag = DisposeBag()
 
-    let faceHelper = FaceApiHelper()
     let viewModel = SM02PhotoViewModel()
+
+    deinit {
+        print("deinit")
+    }
 
     override func configureView() {
         openCameraButton.setTitle("open Camera", for: .normal)
@@ -33,7 +36,7 @@ class SM02PhotoViewController: BaseViewController {
         noImageLabel.text = "No Image Selected"
         noImageLabel.setBorder(color: .black, thickness: 1.0)
         personListTableView.setBorder(color: .black, thickness: 1.0)
-        faceHelper.delegate = self
+        FaceApiHelper.shared.delegate = self
         self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
@@ -94,7 +97,7 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         noImageLabel.isHidden = true
         imageView.image = image
         picker.dismiss(animated: true, completion: nil)
-        faceHelper.detectFace(image: image)
+        FaceApiHelper.shared.detectFace(image: image)
     }
 }
 
