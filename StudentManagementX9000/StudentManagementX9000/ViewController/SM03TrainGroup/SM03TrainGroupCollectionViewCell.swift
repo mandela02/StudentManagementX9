@@ -9,11 +9,16 @@
 import UIKit
 
 class SM03TrainGroupCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var imageHeightConstraints: NSLayoutConstraint!
     
     func configureCell(with person: Person) {
         nameLabel.text = person.name
+        imageView.image = UIImage(named: "emptyAvatar")
+        self.addBorders(edges: .all, color: .black)
+        imageHeightConstraints.constant = self.frame.size.height - 30
+
     }
 }

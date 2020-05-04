@@ -96,6 +96,7 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         }
         noImageLabel.isHidden = true
         imageView.image = image
+        viewModel.faceDataList.accept([])
         picker.dismiss(animated: true, completion: nil)
         ProgressHelper.shared.show()
         FaceApiHelper.shared.detect(image: image).subscribe(onNext: { [weak self] faceCollection in
@@ -108,10 +109,13 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
                 return
             }
             FaceApiHelper.shared.identification(with: faceCollection,
-                                                image: image).subscribe(onNext: { identificationResults in
-                self.viewModel.faceDataList.accept(identificationResults)
-                ProgressHelper.shared.hide()
-            }).disposed(by: self.disposeBag)
+                                                image: image)
+                .subscribe(onNext: { identificationResults in
+                    self.viewModel.faceDataList.accept(identificationResults)
+                    ProgressHelper.shared.hide()
+                }, onError: { error in
+                    ProgressHelper.shared.hide()
+                }).disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)
     }
 }

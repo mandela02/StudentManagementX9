@@ -66,7 +66,7 @@ class FaceApiHelper {
                                                        NSNumber(value: MPOFaceAttributeTypeEmotion.rawValue)],
                                 completionBlock: {faceCollection, error in
                                     if let error = error {
-                                        print(error.localizedDescription)
+                                        print("error: \(error.localizedDescription)")
                                         observer.onError(error)
                                         observer.onCompleted()
                                         return
@@ -120,7 +120,7 @@ class FaceApiHelper {
                                                 name: FaceApi.studentGroupName,
                                                 userData: nil, completionBlock: { error in
                                                     if let error = error {
-                                                        print(error.localizedDescription)
+                                                        print("error: \(error.localizedDescription)")
                                                         return
                                                     }
                                                     let studentGroup = MPOLargePersonGroup()
@@ -154,7 +154,7 @@ class FaceApiHelper {
     func deleteAllGroup(with groupId: String) {
         client?.deleteLargePersonGroup(groupId, completionBlock: { error in
             if let error = error {
-                print(error.localizedDescription)
+                print("error: \(error.localizedDescription)")
                 return
             }
         })
@@ -173,7 +173,9 @@ class FaceApiHelper {
                                  completionBlock: { [weak self] result, error in
                                     guard let self = self else { return }
                                     if let error = error {
-                                        print(error.localizedDescription)
+                                        observable.onError(error)
+                                        observable.onCompleted()
+                                        print("error: \(error.localizedDescription)")
                                         return
                                     }
                                     let student = MPOPerson()
@@ -194,7 +196,7 @@ class FaceApiHelper {
                                     return
                                 }
                                 if let error = error {
-                                    print(error.localizedDescription)
+                                    print("error: \(error.localizedDescription)")
                                     return
                                 }
                                 if let allStudents = allStudents {
@@ -202,7 +204,7 @@ class FaceApiHelper {
                                 }
         })
     }
-    
+
     func deleteAllPerson() {
         client?.listPersons(withLargePersonGroupId: FaceApi.studentGroupId,
                             completionBlock: { [weak self] allStudents, error in
@@ -210,7 +212,7 @@ class FaceApiHelper {
                                     return
                                 }
                                 if let error = error {
-                                    print(error.localizedDescription)
+                                    print("error: \(error.localizedDescription)")
                                     return
                                 }
                                 if let allStudents = allStudents {
@@ -297,7 +299,7 @@ class FaceApiHelper {
                                             if let error = error {
                                                 observable.onError(error)
                                                 observable.onCompleted()
-                                                print(error.localizedDescription)
+                                                print("error: \(error.localizedDescription)")
                                                 return
                                             }
                                             observable.onNext(())
@@ -317,7 +319,7 @@ class FaceApiHelper {
                                     if let error = error {
                                         observable.onError(error)
                                         observable.onCompleted()
-                                        print(error.localizedDescription)
+                                        print("error: \(error.localizedDescription)")
                                         return
                                     }
                                     observable.onNext(())
@@ -332,7 +334,7 @@ class FaceApiHelper {
         client?.deletePerson(withLargePersonGroupId: FaceApi.studentGroupId,
                              personId: personId, completionBlock: { error in
                                 if let error = error {
-                                    print(error.localizedDescription)
+                                    print("error: \(error.localizedDescription)")
                                     return
                                 }
         })
@@ -359,7 +361,7 @@ class FaceApiHelper {
                                   maxNumberOfCandidates: self.students.value.count,
                                   completionBlock: { collection, error in
                                     if let error = error {
-                                        print(error.localizedDescription)
+                                        print("error: \(error.localizedDescription)")
                                         observable.onError(error)
                                         observable.onCompleted()
                                         return

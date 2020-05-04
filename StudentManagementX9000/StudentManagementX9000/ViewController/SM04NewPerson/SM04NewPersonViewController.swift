@@ -67,7 +67,6 @@ class SM04NewPersonViewController: BaseViewController {
         }
         FaceApiHelper.shared.updatePerson(with: viewModel.name.value, of: student).subscribe(onNext: { () in
             ProgressHelper.shared.hide()
-            self.dismiss(animated: true, completion: nil)
         }, onError: { error in
             ProgressHelper.shared.hide()
         }).disposed(by: disposeBag)
@@ -139,7 +138,7 @@ extension SM04NewPersonViewController: UICollectionViewDelegateFlowLayout {
             + CollectionView.sectionInsets.right
             + (CollectionView.sectionInsets.left * (CollectionView.numberOfCellinRow - 1))
         let size = Int((UIScreen.main.bounds.width - padding - 40) / CollectionView.numberOfCellinRow)
-        return CGSize(width: size, height: size/2)
+        return CGSize(width: size, height: size)
     }
 
     func collectionView(_ collectionView: UICollectionView,

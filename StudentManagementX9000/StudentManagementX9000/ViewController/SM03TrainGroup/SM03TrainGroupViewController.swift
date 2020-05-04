@@ -70,7 +70,7 @@ extension SM03TrainGroupViewController: UICollectionViewDelegateFlowLayout {
             + CollectionView.sectionInsets.right
             + (CollectionView.sectionInsets.left * (CollectionView.numberOfCellinRow - 1))
         let size = Int((UIScreen.main.bounds.width - padding - 40) / CollectionView.numberOfCellinRow)
-        return CGSize(width: size, height: size/2)
+        return CGSize(width: size, height: size * 3/2)
     }
 
     func collectionView(_ collectionView: UICollectionView,

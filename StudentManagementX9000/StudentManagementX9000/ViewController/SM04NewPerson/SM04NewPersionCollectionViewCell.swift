@@ -11,8 +11,10 @@ import UIKit
 class SM04NewPersionCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageWidthConstraints: NSLayoutConstraint!
 
     func configureCell(with image: UIImage) {
         imageView.image = image
+        imageWidthConstraints.constant = self.frame.size.height
     }
 }
