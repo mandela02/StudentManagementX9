@@ -60,11 +60,17 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
+        ProgressHelper.shared.show()
         guard let student = viewModel.student.value else {
+            ProgressHelper.shared.hide()
             return
         }
-        // crash here
-        FaceApiHelper.shared.updatePerson(with: viewModel.name.value, of: student)
+        FaceApiHelper.shared.updatePerson(with: viewModel.name.value, of: student).subscribe(onNext: { () in
+            ProgressHelper.shared.hide()
+            self.dismiss(animated: true, completion: nil)
+        }, onError: { error in
+            ProgressHelper.shared.hide()
+        }).disposed(by: disposeBag)
     }
 
     private func configureCollectionView() {
@@ -96,9 +102,8 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
         guard let student = viewModel.student.value else {
             return
         }
-
+        ProgressHelper.shared.show()        
         FaceApiHelper.shared.detectFace(image: image)
-
         FaceApiHelper.shared
             .trainPerson(with: image,
                          studentId: student.personId)
@@ -113,6 +118,7 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
                 case .noFace:
                     print("noFace")
                 }
+                ProgressHelper.shared.hide()
             }).disposed(by: disposeBag)
     }
 }

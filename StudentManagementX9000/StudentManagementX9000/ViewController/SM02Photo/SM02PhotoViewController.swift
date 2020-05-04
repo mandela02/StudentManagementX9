@@ -97,11 +97,20 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         noImageLabel.isHidden = true
         imageView.image = image
         picker.dismiss(animated: true, completion: nil)
-        FaceApiHelper.shared.detect(image: image).subscribe(onNext: { faceCollection in
-            guard let faceCollection = faceCollection else { return }
+        ProgressHelper.shared.show()
+        FaceApiHelper.shared.detect(image: image).subscribe(onNext: { [weak self] faceCollection in
+            guard let self = self else {
+                ProgressHelper.shared.hide()
+                return
+            }
+            guard let faceCollection = faceCollection else {
+                ProgressHelper.shared.hide()
+                return
+            }
             FaceApiHelper.shared.identification(with: faceCollection,
                                                 image: image).subscribe(onNext: { identificationResults in
                 self.viewModel.faceDataList.accept(identificationResults)
+                ProgressHelper.shared.hide()
             }).disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)
     }

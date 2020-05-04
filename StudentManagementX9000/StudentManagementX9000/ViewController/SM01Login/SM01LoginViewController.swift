@@ -30,22 +30,22 @@ class SM01LoginViewController: BaseViewController {
     }
 
     override func configureObservers() {
-        loginButton.isEnabled = false
-        viewModel.isUserAccountValid
-            .bind(to: loginButton.rx.isEnabled)
-            .disposed(by: disposeBag)
-        emailTextField.rx.text
-            .map { $0 ?? "" }
-            .bind(to: viewModel.userEmail)
-            .disposed(by: disposeBag)
-        passwordTextField.rx.text
-            .map { $0 ?? "" }
-            .bind(to: viewModel.userPassword)
-            .disposed(by: disposeBag)
-        InternetHelper.shared.connectionStatus.subscribe(onNext: { [weak self] status in
-            guard let self = self else { return  }
-            self.loginButton.isEnabled = status == .online
-        }).disposed(by: disposeBag)
+        loginButton.isEnabled = true
+//        viewModel.isUserAccountValid
+//            .bind(to: loginButton.rx.isEnabled)
+//            .disposed(by: disposeBag)
+//        emailTextField.rx.text
+//            .map { $0 ?? "" }
+//            .bind(to: viewModel.userEmail)
+//            .disposed(by: disposeBag)
+//        passwordTextField.rx.text
+//            .map { $0 ?? "" }
+//            .bind(to: viewModel.userPassword)
+//            .disposed(by: disposeBag)
+//        InternetHelper.shared.connectionStatus.subscribe(onNext: { [weak self] status in
+//            guard let self = self else { return  }
+//            self.loginButton.isEnabled = status == .online
+//        }).disposed(by: disposeBag)
     }
 
     private func setupView() {
@@ -60,7 +60,7 @@ class SM01LoginViewController: BaseViewController {
         emailTextField.layer.masksToBounds = true
         loginButton.setDisable()
 
-        emailTextField.becomeFirstResponder()
+        //emailTextField.becomeFirstResponder()
     }
 
     private func setupLanguage() {

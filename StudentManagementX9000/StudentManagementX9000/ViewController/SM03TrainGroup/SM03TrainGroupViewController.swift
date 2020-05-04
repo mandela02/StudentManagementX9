@@ -37,7 +37,10 @@ class SM03TrainGroupViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
-        FaceApiHelper.shared.trainGroup()
+        ProgressHelper.shared.show()
+        FaceApiHelper.shared.trainGroup().subscribe(onNext: { () in
+            ProgressHelper.shared.hide()
+        }).disposed(by: disposeBag)
     }
 
     private func configureCollectionView() {

@@ -14,11 +14,21 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         delegate = self
         loadItem()
+        deleteAllPersonButton()
         self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+
+    private func deleteAllPersonButton() {
+        let clearBarButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clear))
+        navigationItem.rightBarButtonItem = clearBarButtonItem
+    }
+
+    @objc private func clear() {
+        FaceApiHelper.shared.deleteAllPerson()
     }
 
     private func loadItem() {
