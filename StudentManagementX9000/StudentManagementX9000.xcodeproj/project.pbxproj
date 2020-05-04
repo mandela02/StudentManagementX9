@@ -15,6 +15,7 @@
 		9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D2244B545000145CC7 /* FaceApiHelper.swift */; };
 		9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */; };
 		9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */; };
+		9078DC322457BC1A00ACE7BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9078DC312457BC1A00ACE7BC /* GoogleService-Info.plist */; };
 		90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */; };
 		90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90987D69244B45F500411B0E /* SM02PhotoViewController.swift */; };
 		90A4C1182445FD1E00BDA555 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C1172445FD1E00BDA555 /* AppDelegate.swift */; };
@@ -51,6 +52,7 @@
 		90A4C181244604DD00BDA555 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C17E244604DD00BDA555 /* BaseViewController.swift */; };
 		90A4C182244604DD00BDA555 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C17F244604DD00BDA555 /* BaseTableViewController.swift */; };
 		90A4C18424460A5300BDA555 /* SM01LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A4C18324460A5300BDA555 /* SM01LoginViewModel.swift */; };
+		90B198722458427600597A60 /* StorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B198712458427600597A60 /* StorageHelper.swift */; };
 		90B55D9D244C42CA0035D645 /* TabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B55D9C244C42CA0035D645 /* TabBarController.storyboard */; };
 		90B55D9F244C433B0035D645 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B55D9E244C433B0035D645 /* TabBarController.swift */; };
 		90B55DA3244C46ED0035D645 /* SM03TrainGroupViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B55DA2244C46ED0035D645 /* SM03TrainGroupViewController.storyboard */; };
@@ -87,6 +89,7 @@
 		9023A7D2244B545000145CC7 /* FaceApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceApiHelper.swift; sourceTree = "<group>"; };
 		9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionCell.swift; sourceTree = "<group>"; };
 		9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewModel.swift; sourceTree = "<group>"; };
+		9078DC312457BC1A00ACE7BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM02PhotoViewController.storyboard; sourceTree = "<group>"; };
 		90987D69244B45F500411B0E /* SM02PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewController.swift; sourceTree = "<group>"; };
 		90A4C1142445FD1E00BDA555 /* StudentManagementX9000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudentManagementX9000.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +132,7 @@
 		90A4C17E244604DD00BDA555 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		90A4C17F244604DD00BDA555 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		90A4C18324460A5300BDA555 /* SM01LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM01LoginViewModel.swift; sourceTree = "<group>"; };
+		90B198712458427600597A60 /* StorageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageHelper.swift; sourceTree = "<group>"; };
 		90B55D9C244C42CA0035D645 /* TabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarController.storyboard; sourceTree = "<group>"; };
 		90B55D9E244C433B0035D645 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		90B55DA2244C46ED0035D645 /* SM03TrainGroupViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM03TrainGroupViewController.storyboard; sourceTree = "<group>"; };
@@ -230,6 +234,7 @@
 				90A4C1202445FD2100BDA555 /* Assets.xcassets */,
 				90A4C1222445FD2100BDA555 /* LaunchScreen.storyboard */,
 				90A4C1252445FD2100BDA555 /* Info.plist */,
+				9078DC312457BC1A00ACE7BC /* GoogleService-Info.plist */,
 			);
 			path = StudentManagementX9000;
 			sourceTree = "<group>";
@@ -293,6 +298,7 @@
 				90A4C1672445FFBF00BDA555 /* ProgressHelper.swift */,
 				90A4C1682445FFBF00BDA555 /* StringHelper.swift */,
 				9023A7D2244B545000145CC7 /* FaceApiHelper.swift */,
+				90B198712458427600597A60 /* StorageHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -384,6 +390,7 @@
 				90A4C1122445FD1E00BDA555 /* Resources */,
 				81290873F5263B71B621C126 /* [CP] Embed Pods Frameworks */,
 				90987D65244B427200411B0E /* ShellScript */,
+				D56125F8814C17E5788E4706 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -422,6 +429,7 @@
 				90A4C1322445FD2100BDA555 /* Frameworks */,
 				90A4C1332445FD2100BDA555 /* Resources */,
 				85220692F060394FBE0B8D39 /* [CP] Embed Pods Frameworks */,
+				31A3FD8481C088363E2AD537 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -483,6 +491,7 @@
 			files = (
 				90B55D9D244C42CA0035D645 /* TabBarController.storyboard in Resources */,
 				90B55DA8244CB84A0035D645 /* SM04NewPersonViewController.storyboard in Resources */,
+				9078DC322457BC1A00ACE7BC /* GoogleService-Info.plist in Resources */,
 				90A4C1242445FD2100BDA555 /* LaunchScreen.storyboard in Resources */,
 				90A4C1792446033100BDA555 /* SM01LoginViewController.storyboard in Resources */,
 				90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */,
@@ -509,6 +518,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		31A3FD8481C088363E2AD537 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		417C56E6B9BC6D7EF84B82D6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +630,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D56125F8814C17E5788E4706 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000/Pods-StudentManagementX9000-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000/Pods-StudentManagementX9000-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StudentManagementX9000/Pods-StudentManagementX9000-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F1EB2A90F662EE76931224E4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -652,6 +695,7 @@
 				90085E54244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift in Sources */,
 				90A4C16D2445FFBF00BDA555 /* ProgressHelper.swift in Sources */,
 				90A4C1542445FF8200BDA555 /* UIColor+Extension.swift in Sources */,
+				90B198722458427600597A60 /* StorageHelper.swift in Sources */,
 				90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */,
 				9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */,
 				90A4C174244600A500BDA555 /* NSObject+Extension.swift in Sources */,

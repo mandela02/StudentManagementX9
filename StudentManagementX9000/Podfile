@@ -17,6 +17,8 @@ target 'StudentManagementX9000' do
     pod 'ReachabilitySwift'
     pod 'SwiftLint'
     pod 'ProjectOxfordFace'
+    pod 'Firebase/Storage'
+    pod 'FirebaseUI'
 
   # Pods for StudentManagementX9000
 

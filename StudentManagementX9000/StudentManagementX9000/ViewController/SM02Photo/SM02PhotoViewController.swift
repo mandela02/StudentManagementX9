@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import FirebaseUI
 
 class SM02PhotoViewController: BaseViewController {
 
@@ -98,7 +99,8 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
         picker.dismiss(animated: true, completion: nil)
         FaceApiHelper.shared.detect(image: image).subscribe(onNext: { faceCollection in
             guard let faceCollection = faceCollection else { return }
-            FaceApiHelper.shared.identification(with: faceCollection).subscribe(onNext: { identificationResults in
+            FaceApiHelper.shared.identification(with: faceCollection,
+                                                image: image).subscribe(onNext: { identificationResults in
                 self.viewModel.faceDataList.accept(identificationResults)
             }).disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)

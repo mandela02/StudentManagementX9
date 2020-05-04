@@ -22,6 +22,7 @@ struct FaceModel {
 struct IdentificationResult {
     var person: MPOPerson
     var confidence: Double
+    var model: FaceModel?
 }
 
 protocol FaceApiDelegate: class {
@@ -66,6 +67,8 @@ class FaceApiHelper {
                                 completionBlock: {faceCollection, error in
                                     if let error = error {
                                         print(error.localizedDescription)
+                                        observer.onError(error)
+                                        observer.onCompleted()
                                         return
                                     }
                                     observer.onNext(faceCollection)
@@ -301,16 +304,16 @@ class FaceApiHelper {
         })
     }
 
-    private func getPerson(with id: String) -> MPOPerson? {
-        let index = students.value.map({$0.personId}).firstIndex(of: id)
+    private func getPerson(with personId: String) -> MPOPerson? {
+        let index = students.value.map({$0.personId}).firstIndex(of: personId)
         if let index = index {
             return students.value[index]
         }
         return nil
     }
 
-    func identification(with persons: [MPOFace]) -> Observable<[IdentificationResult]> {
-        let ids = persons.map({$0.faceId})
+    func identification(with persons: [MPOFace], image: UIImage) -> Observable<[IdentificationResult]> {
+        var listFaceId = persons.map({$0.faceId})
         var personList: [IdentificationResult] = []
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
@@ -318,37 +321,70 @@ class FaceApiHelper {
                 return Disposables.create()
             }
             self.client?.identify(withLargePersonGroupId: FaceApi.studentGroupId,
-                             faceIds: ids,
-                             maxNumberOfCandidates: self.students.value.count,
-                             completionBlock: { collection, error in
-                                if let error = error {
-                                    print(error.localizedDescription)
-                                    observable.onError(error)
-                                    observable.onCompleted()
-                                    return
-                                }
-                                guard let collection = collection else {
-                                    observable.onCompleted()
-                                    return
-                                }
-                                for result in collection {
-                                    for candidate in result.candidates {
-                                        guard let candidate = candidate as? MPOCandidate else {
-                                            observable.onCompleted()
-                                            return
+                                  faceIds: listFaceId as [Any],
+                                  maxNumberOfCandidates: self.students.value.count,
+                                  completionBlock: { collection, error in
+                                    if let error = error {
+                                        print(error.localizedDescription)
+                                        observable.onError(error)
+                                        observable.onCompleted()
+                                        return
+                                    }
+                                    guard let collection = collection else {
+                                        observable.onCompleted()
+                                        return
+                                    }
+                                    for result in collection {
+                                        guard let idIndex = listFaceId.firstIndex(of: result.faceId) else {
+                                            continue
                                         }
-                                        let person = self.getPerson(with: candidate.personId)
-                                        let confidence = candidate.confidence.doubleValue
-                                        if let person = person {
-                                            personList.append(IdentificationResult(person: person,
-                                                                                   confidence: confidence))
+                                        let model = self.creatFaceModelFromFace(face: persons[idIndex], of: image)
+                                        if result.candidates.count == 0 {
+                                            personList.append(IdentificationResult(person: MPOPerson(),
+                                                                                   confidence: 0.0,
+                                                                                   model: model))
+                                            continue
+                                        }
+                                        for candidate in result.candidates {
+                                            guard let candidate = candidate as? MPOCandidate else {
+                                                continue
+                                            }
+                                            let person = self.getPerson(with: candidate.personId)
+                                            let confidence = candidate.confidence.doubleValue
+                                            if let person = person {
+                                                personList.append(IdentificationResult(person: person,
+                                                                                       confidence: confidence,
+                                                                                       model: model))
+                                            }
                                         }
                                     }
-                                }
-                                observable.onNext(personList)
-                                observable.onCompleted()
+                                    observable.onNext(personList)
+                                    observable.onCompleted()
             })
             return Disposables.create()
         }
+    }
+    
+    private func creatFaceModelFromFace(face: MPOFace, of image: UIImage) -> FaceModel? {
+        guard let faceRectangleLeft = face.faceRectangle.left,
+            let faceRectangleTop = face.faceRectangle.top,
+            let faceRectangleWidth = face.faceRectangle.width,
+            let faceRectangleHeight = face.faceRectangle.height else {
+            return nil
+        }
+        let faceRect = CGRect(x: CGFloat(faceRectangleLeft.floatValue),
+                              y: CGFloat(faceRectangleTop.floatValue),
+                              width: CGFloat(faceRectangleWidth.floatValue),
+                              height: CGFloat(faceRectangleHeight.floatValue))
+        let croppedImage = image.cgImage?.cropping(to: faceRect)
+        if let croppedImage = croppedImage {
+            let faceModel = FaceModel(faceImage: UIImage(cgImage: croppedImage),
+                                      gender: face.attributes.gender,
+                                      emotion: face.attributes?.emotion.mostEmotion,
+                                      age: face.attributes?.age.stringValue,
+                                      rect: faceRect)
+            return faceModel
+        }
+        return nil
     }
 }
