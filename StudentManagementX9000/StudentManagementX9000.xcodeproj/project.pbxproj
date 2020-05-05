@@ -15,6 +15,9 @@
 		9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D2244B545000145CC7 /* FaceApiHelper.swift */; };
 		9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */; };
 		9023A7D7244B67B000145CC7 /* SM02PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */; };
+		905437FF24617E12003F5326 /* SM05TwoFaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 905437FE24617E12003F5326 /* SM05TwoFaceViewController.storyboard */; };
+		9054380424617E57003F5326 /* SM05TwoFaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054380324617E57003F5326 /* SM05TwoFaceViewController.swift */; };
+		9054380624618002003F5326 /* SM05TwoFaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054380524618002003F5326 /* SM05TwoFaceCell.swift */; };
 		9078DC322457BC1A00ACE7BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9078DC312457BC1A00ACE7BC /* GoogleService-Info.plist */; };
 		90987D68244B43D900411B0E /* SM02PhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */; };
 		90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90987D69244B45F500411B0E /* SM02PhotoViewController.swift */; };
@@ -89,6 +92,9 @@
 		9023A7D2244B545000145CC7 /* FaceApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceApiHelper.swift; sourceTree = "<group>"; };
 		9023A7D4244B5CFB00145CC7 /* FaceDetectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionCell.swift; sourceTree = "<group>"; };
 		9023A7D6244B67B000145CC7 /* SM02PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewModel.swift; sourceTree = "<group>"; };
+		905437FE24617E12003F5326 /* SM05TwoFaceViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM05TwoFaceViewController.storyboard; sourceTree = "<group>"; };
+		9054380324617E57003F5326 /* SM05TwoFaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM05TwoFaceViewController.swift; sourceTree = "<group>"; };
+		9054380524618002003F5326 /* SM05TwoFaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM05TwoFaceCell.swift; sourceTree = "<group>"; };
 		9078DC312457BC1A00ACE7BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90987D67244B43D900411B0E /* SM02PhotoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SM02PhotoViewController.storyboard; sourceTree = "<group>"; };
 		90987D69244B45F500411B0E /* SM02PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM02PhotoViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +194,16 @@
 				F5F3678E50211A1639F770CD /* Pods-StudentManagementX9000Tests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		9054380024617E1E003F5326 /* SM05TwoFace */ = {
+			isa = PBXGroup;
+			children = (
+				905437FE24617E12003F5326 /* SM05TwoFaceViewController.storyboard */,
+				9054380324617E57003F5326 /* SM05TwoFaceViewController.swift */,
+				9054380524618002003F5326 /* SM05TwoFaceCell.swift */,
+			);
+			path = SM05TwoFace;
 			sourceTree = "<group>";
 		};
 		90987D66244B43B800411B0E /* SM02Photo */ = {
@@ -335,6 +351,7 @@
 		90B55DA0244C43BC0035D645 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9054380024617E1E003F5326 /* SM05TwoFace */,
 				90B55DA6244CB80B0035D645 /* SM04NewPerson */,
 				90B55DA1244C45FB0035D645 /* SM03TrainGroup */,
 				90B55D9B244C42BD0035D645 /* TabBar */,
@@ -491,6 +508,7 @@
 			files = (
 				90B55D9D244C42CA0035D645 /* TabBarController.storyboard in Resources */,
 				90B55DA8244CB84A0035D645 /* SM04NewPersonViewController.storyboard in Resources */,
+				905437FF24617E12003F5326 /* SM05TwoFaceViewController.storyboard in Resources */,
 				9078DC322457BC1A00ACE7BC /* GoogleService-Info.plist in Resources */,
 				90A4C1242445FD2100BDA555 /* LaunchScreen.storyboard in Resources */,
 				90A4C1792446033100BDA555 /* SM01LoginViewController.storyboard in Resources */,
@@ -685,6 +703,7 @@
 				90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */,
 				90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */,
 				90A4C181244604DD00BDA555 /* BaseViewController.swift in Sources */,
+				9054380424617E57003F5326 /* SM05TwoFaceViewController.swift in Sources */,
 				90A4C1602445FF9E00BDA555 /* Settings.swift in Sources */,
 				90A4C1612445FF9E00BDA555 /* Constants.swift in Sources */,
 				90A4C1562445FF8200BDA555 /* UIView+Extension.swift in Sources */,
@@ -713,6 +732,7 @@
 				90B55DAB244CBA270035D645 /* SM04NewPersonViewController.swift in Sources */,
 				90A4C1702446000300BDA555 /* DateFormatterHelper.swift in Sources */,
 				90A4C16E2445FFBF00BDA555 /* StringHelper.swift in Sources */,
+				9054380624618002003F5326 /* SM05TwoFaceCell.swift in Sources */,
 				90A4C16B2445FFBF00BDA555 /* InternetHelper.swift in Sources */,
 				90A4C16A2445FFBF00BDA555 /* ImageHelper.swift in Sources */,
 				9023A7D5244B5CFB00145CC7 /* FaceDetectionCell.swift in Sources */,

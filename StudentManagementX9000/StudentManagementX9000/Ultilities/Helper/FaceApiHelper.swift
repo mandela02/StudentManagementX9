@@ -25,22 +25,10 @@ struct IdentificationResult {
     var model: FaceModel?
 }
 
-protocol FaceApiDelegate: class {
-    func didFinishDetection(models: [FaceModel])
-}
-
-enum DetectResult {
-    case error
-    case success
-    case noFace
-    case moreThanOneFace
-}
-
 class FaceApiHelper {
     static let shared = FaceApiHelper()
     let client = MPOFaceServiceClient(endpointAndSubscriptionKey: FaceApi.endPoint, key: FaceApi.subscriptionKey)
     var studentGroup: MPOLargePersonGroup?
-    weak var delegate: FaceApiDelegate?
     private let disposeBag = DisposeBag()
     let students: BehaviorRelay<[MPOPerson]> = BehaviorRelay(value: [])
 
@@ -78,35 +66,46 @@ class FaceApiHelper {
         }
     }
 
-    func detectFace(image: UIImage) {
-        var faceModels: [FaceModel] = []
-        detect(image: image).subscribe(onNext: { faceCollection in
-            guard let faceCollection = faceCollection else {
-                return
+    func detectFace(image: UIImage) -> Observable<[FaceModel]?> {
+        return Observable.create { [weak self] observer in
+            guard let self = self else {
+                observer.onNext(nil)
+                observer.onCompleted()
+                return Disposables.create()
             }
-            for face in faceCollection {
-                guard let faceRectangleLeft = face.faceRectangle.left,
-                    let faceRectangleTop = face.faceRectangle.top,
-                    let faceRectangleWidth = face.faceRectangle.width,
-                    let faceRectangleHeight = face.faceRectangle.height else {
-                        continue
+            var faceModels: [FaceModel] = []
+            self.detect(image: image).subscribe(onNext: { faceCollection in
+                guard let faceCollection = faceCollection else {
+                    observer.onNext(nil)
+                    observer.onCompleted()
+                    return
                 }
-                let faceRect = CGRect(x: CGFloat(faceRectangleLeft.floatValue),
-                                      y: CGFloat(faceRectangleTop.floatValue),
-                                      width: CGFloat(faceRectangleWidth.floatValue),
-                                      height: CGFloat(faceRectangleHeight.floatValue))
-                let croppedImage = image.cgImage?.cropping(to: faceRect)
-                if let croppedImage = croppedImage {
-                    let faceModel = FaceModel(faceImage: UIImage(cgImage: croppedImage),
-                                              gender: face.attributes.gender,
-                                              emotion: face.attributes?.emotion.mostEmotion,
-                                              age: face.attributes?.age.stringValue,
-                                              rect: faceRect)
-                    faceModels.append(faceModel)
+                for face in faceCollection {
+                    guard let faceRectangleLeft = face.faceRectangle.left,
+                        let faceRectangleTop = face.faceRectangle.top,
+                        let faceRectangleWidth = face.faceRectangle.width,
+                        let faceRectangleHeight = face.faceRectangle.height else {
+                            continue
+                    }
+                    let faceRect = CGRect(x: CGFloat(faceRectangleLeft.floatValue),
+                                          y: CGFloat(faceRectangleTop.floatValue),
+                                          width: CGFloat(faceRectangleWidth.floatValue),
+                                          height: CGFloat(faceRectangleHeight.floatValue))
+                    let croppedImage = image.cgImage?.cropping(to: faceRect)
+                    if let croppedImage = croppedImage {
+                        let faceModel = FaceModel(faceImage: UIImage(cgImage: croppedImage),
+                                                  gender: face.attributes.gender,
+                                                  emotion: face.attributes?.emotion.mostEmotion,
+                                                  age: face.attributes?.age.stringValue,
+                                                  rect: faceRect)
+                        faceModels.append(faceModel)
+                    }
                 }
-            }
-            self.delegate?.didFinishDetection(models: faceModels)
-        }).disposed(by: self.disposeBag)
+                observer.onNext(faceModels)
+                observer.onCompleted()
+            }).disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
     }
 
     func creatPeopleGroupIfNeed() -> Observable<MPOLargePersonGroup?> {
@@ -224,53 +223,34 @@ class FaceApiHelper {
         })
     }
 
-    func trainPerson(with image: UIImage, studentId: String) -> Observable<DetectResult> {
+    func trainPerson(image: UIImage, with model: MPOFace, studentId: String) -> Observable<()> {
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
-                observable.onNext(.error)
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo:nil)
+                observable.onError(errorTemp)
                 observable.onCompleted()
                 return Disposables.create()
             }
-            self.detect(image: image).subscribe(onNext: { collection in
-                guard let collection = collection else {
-                    observable.onNext(.error)
+            self.train(image: image,
+                       face: model,
+                       studentId: studentId)
+                .subscribe(onNext: {  _ in
+                    observable.onNext(())
                     observable.onCompleted()
-                    return
-                }
-                if collection.count == 0 {
-                    observable.onNext(.noFace)
-                    observable.onCompleted()
-                } else if collection.count == 1, let face = collection.first {
-                    self.train(image: image, face: face, studentId: studentId).subscribe(onNext: { result in
-                        switch result {
-                        case .error:
-                            observable.onNext(.error)
-                            observable.onCompleted()
-                        case .success:
-                            observable.onNext(.success)
-                            observable.onCompleted()
-                        case .moreThanOneFace:
-                            observable.onNext(.error)
-                            observable.onCompleted()
-                        case .noFace:
-                            observable.onNext(.error)
-                            observable.onCompleted()
-                        }
-                    }).disposed(by: self.disposeBag)
-                } else {
-                    observable.onNext(.moreThanOneFace)
-                    observable.onCompleted()
-                }
-            }).disposed(by: self.disposeBag)
+            }, onError: { error in
+                observable.onError(error)
+                observable.onCompleted()
+                }).disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
 
-    private func train(image: UIImage, face: MPOFace, studentId: String) -> Observable<DetectResult> {
+    private func train(image: UIImage, face: MPOFace, studentId: String) -> Observable<()> {
         let jpegData = image.jpegData(compressionQuality: 0.75)
         return Observable.create { [weak self] observable in
             guard let self = self else {
-                observable.onNext(.error)
+                let errorTemp = NSError(domain:"no self", code: 404, userInfo:nil)
+                observable.onError(errorTemp)
                 observable.onCompleted()
                 return Disposables.create()
             }
@@ -280,11 +260,11 @@ class FaceApiHelper {
                                        userData: nil,
                                        faceRectangle: face.faceRectangle,
                                        completionBlock: { _, error in
-                                        if error == nil {
-                                            observable.onNext(.success)
+                                        if let error = error {
+                                            observable.onError(error)
                                             observable.onCompleted()
                                         } else {
-                                            observable.onNext(.error)
+                                            observable.onNext(())
                                             observable.onCompleted()
                                         }
             })
@@ -399,6 +379,21 @@ class FaceApiHelper {
             })
             return Disposables.create()
         }
+    }
+
+    func cutImage(from face: MPOFace, of image: UIImage) -> UIImage {
+        guard let faceRectangleLeft = face.faceRectangle.left,
+            let faceRectangleTop = face.faceRectangle.top,
+            let faceRectangleWidth = face.faceRectangle.width,
+            let faceRectangleHeight = face.faceRectangle.height else {
+            return UIImage()
+        }
+        let faceRect = CGRect(x: CGFloat(faceRectangleLeft.floatValue),
+                              y: CGFloat(faceRectangleTop.floatValue),
+                              width: CGFloat(faceRectangleWidth.floatValue),
+                              height: CGFloat(faceRectangleHeight.floatValue))
+        guard let croppedImage = image.cgImage?.cropping(to: faceRect) else { return UIImage() }
+        return UIImage(cgImage: croppedImage)
     }
     
     private func creatFaceModelFromFace(face: MPOFace, of image: UIImage) -> FaceModel? {

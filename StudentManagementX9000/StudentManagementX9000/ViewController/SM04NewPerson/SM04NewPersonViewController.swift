@@ -19,15 +19,14 @@ class SM04NewPersonViewController: BaseViewController {
     @IBOutlet weak var pickImageButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var imageCollectionView: UICollectionView!
-
+    
     let viewModel = SM04NewPersonViewModel()
     let disposeBag = DisposeBag()
-
+    
     override func configureView() {
         configureCollectionView()
-        FaceApiHelper.shared.delegate = self
     }
-
+    
     override func configureObservers() {
         studentNameTextField.rx.text
             .map { $0 ?? "" }
@@ -39,7 +38,11 @@ class SM04NewPersonViewController: BaseViewController {
             self.pickImageButton.isEnabled = isValid
         }).disposed(by: disposeBag)
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        save()
+    }
+    
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -60,6 +63,10 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
+        save()
+    }
+
+    private func save() {
         ProgressHelper.shared.show()
         guard let student = viewModel.student.value else {
             ProgressHelper.shared.hide()
@@ -67,7 +74,7 @@ class SM04NewPersonViewController: BaseViewController {
         }
         FaceApiHelper.shared.updatePerson(with: viewModel.name.value, of: student).subscribe(onNext: { () in
             ProgressHelper.shared.hide()
-        }, onError: { error in
+        }, onError: { _ in
             ProgressHelper.shared.hide()
         }).disposed(by: disposeBag)
     }
@@ -101,32 +108,42 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
         guard let student = viewModel.student.value else {
             return
         }
-        ProgressHelper.shared.show()        
-        FaceApiHelper.shared.detectFace(image: image)
-        FaceApiHelper.shared
-            .trainPerson(with: image,
-                         studentId: student.personId)
-            .subscribe(onNext: { result in
-                switch result {
-                case .success:
-                    print("success")
-                case .error:
-                    print("error")
-                case .moreThanOneFace:
-                    print("moreThanOneFace")
-                case .noFace:
-                    print("noFace")
-                }
+        ProgressHelper.shared.show()
+        FaceApiHelper.shared.detect(image: image).subscribe(onNext: { [weak self] faces in
+            guard let self = self else { return }
+            guard let faces = faces else {
+                return
+            }
+            if faces.count == 0 {
                 ProgressHelper.shared.hide()
-            }).disposed(by: disposeBag)
-    }
-}
-
-extension SM04NewPersonViewController: FaceApiDelegate {
-    func didFinishDetection(models: [FaceModel]) {
-        if let faceModel = models.first, let image = faceModel.faceImage {
-            viewModel.addNewImage(image: image)
-        }
+            } else if faces.count != 1 {
+                ProgressHelper.shared.hide()
+                var imageList: [UIImage] = []
+                for face in faces {
+                    imageList.append(FaceApiHelper.shared.cutImage(from: face, of: image))
+                }
+                let twoFaceViewController = SM05TwoFaceViewController.instantiateFromStoryboard()
+                twoFaceViewController.modalPresentationStyle = .overFullScreen
+                twoFaceViewController.modalTransitionStyle = .crossDissolve
+                twoFaceViewController.faces = faces
+                twoFaceViewController.studentId = student.personId
+                twoFaceViewController.image = image
+                twoFaceViewController.newPersonParentViewController = self
+                self.present(twoFaceViewController, animated: true, completion: nil)
+            } else {
+                guard let face = faces.first else { return }
+                self.viewModel.addNewImage(image: FaceApiHelper.shared.cutImage(from: face, of: image))
+                FaceApiHelper.shared.trainPerson(image: image ,
+                                                 with: face,
+                                                 studentId: student.personId).subscribe(onNext: { _ in
+                                                    ProgressHelper.shared.hide()
+                                                 }, onError: { _ in
+                                                    ProgressHelper.shared.hide()
+                                                 }).disposed(by: self.disposeBag)
+            }
+            }, onError: { _ in
+                ProgressHelper.shared.hide()
+        }).disposed(by: disposeBag)
     }
 }
 
@@ -140,7 +157,7 @@ extension SM04NewPersonViewController: UICollectionViewDelegateFlowLayout {
         let size = Int((UIScreen.main.bounds.width - padding - 40) / CollectionView.numberOfCellinRow)
         return CGSize(width: size, height: size)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {

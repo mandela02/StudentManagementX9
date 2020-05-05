@@ -64,7 +64,7 @@ class StorageHelper {
             return Disposables.create()
         }
     }
-    
+
     static func uploadImage(of image: UIImage, at lib: String) -> Observable<Void> {
         return Observable.create { observer in
             guard let uploadData = image.pngData() else {
