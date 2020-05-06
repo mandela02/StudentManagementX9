@@ -39,10 +39,6 @@ class SM04NewPersonViewController: BaseViewController {
         }).disposed(by: disposeBag)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        save()
-    }
-
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -72,11 +68,22 @@ class SM04NewPersonViewController: BaseViewController {
             ProgressHelper.shared.hide()
             return
         }
-        FaceApiHelper.shared.updatePerson(with: viewModel.name.value, of: student).subscribe(onNext: { () in
-            ProgressHelper.shared.hide()
-        }, onError: { _ in
-            ProgressHelper.shared.hide()
-        }).disposed(by: disposeBag)
+        for image in viewModel.listImage.value {
+            StorageHelper.uploadImage(of: image, at: student.personId).subscribe().disposed(by: disposeBag)
+        }
+        StorageHelper.uploadMultiImage(of: viewModel.listImage.value,
+                                       at: student.personId)
+            .subscribe(onError: { _ in
+                ProgressHelper.shared.hide()
+            }, onCompleted: {
+                FaceApiHelper.shared.updatePerson(with: self.viewModel.name.value,
+                                                  of: student)
+                    .subscribe(onNext: { () in
+                        ProgressHelper.shared.hide()
+                    }, onError: { _ in
+                        ProgressHelper.shared.hide()
+                    }).disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
     }
 
     private func configureCollectionView() {
@@ -99,6 +106,10 @@ class SM04NewPersonViewController: BaseViewController {
 }
 
 extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.editedImage] as? UIImage else {
@@ -157,7 +168,7 @@ extension SM04NewPersonViewController: UICollectionViewDelegateFlowLayout {
         let size = Int((UIScreen.main.bounds.width - padding - 40) / CollectionView.numberOfCellinRow)
         return CGSize(width: size, height: size)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {

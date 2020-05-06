@@ -40,6 +40,36 @@ class StorageHelper {
         }
     }
 
+    static func getAvatar(from lib: String) -> Observable<UIImage> {
+        return Observable.create { observer in
+            storageRef.child(lib).listAll { results, error in
+                if let error = error {
+                    print("Error \(error)")
+                    observer.onError(error)
+                    observer.onCompleted()
+                    return
+                }
+                guard let result = results.items.first else {
+                    let errorTemp = NSError(domain: "nil image", code: 405, userInfo: nil)
+                    observer.onError(errorTemp)
+                    observer.onCompleted()
+                    return
+                }
+                getImage(from: result).subscribe(onNext: { image in
+                    guard let image = image else {
+                        let errorTemp = NSError(domain: "nil image", code: 405, userInfo: nil)
+                        observer.onError(errorTemp)
+                        observer.onCompleted()
+                        return
+                    }
+                    observer.onNext(image)
+                    observer.onCompleted()
+                    }).disposed(by: disposeBag)
+            }
+            return Disposables.create()
+        }
+    }
+
     static func getAllImage(of lib: String) -> Observable<[UIImage]> {
         return Observable.create { observer in
             var images: [UIImage] = []
@@ -68,10 +98,13 @@ class StorageHelper {
     static func uploadImage(of image: UIImage, at lib: String) -> Observable<Void> {
         return Observable.create { observer in
             guard let uploadData = image.pngData() else {
+                let error = NSError(domain: "Nil data", code: 01, userInfo: nil)
+                observer.onError(error)
                 observer.onCompleted()
                 return Disposables.create()
             }
-            storageRef.child(lib).putData(uploadData, metadata: nil) { metadata, error in
+            let uniqueId = UUID().uuidString
+            storageRef.child(lib).child(uniqueId + ".png").putData(uploadData, metadata: nil) { _, error in
                 if let error = error {
                     observer.onError(error)
                     observer.onCompleted()
@@ -79,6 +112,34 @@ class StorageHelper {
                     return
                 }
                 observer.onNext(())
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
+    static func uploadMultiImage(of images: [UIImage], at lib: String) -> Observable<Void> {
+        return Observable.create { observer in
+            let dispatchGroup = DispatchGroup()
+            for image in images {
+                dispatchGroup.enter()
+                guard let uploadData = image.pngData() else {
+                    let error = NSError(domain: "Nil data", code: 01, userInfo: nil)
+                    observer.onError(error)
+                    continue
+                }
+                let uniqueId = UUID().uuidString
+                storageRef.child(lib).child(uniqueId + ".png").putData(uploadData, metadata: nil) { _, error in
+                    if let error = error {
+                        observer.onError(error)
+                        print("Error \(error)")
+                        return
+                    }
+                    observer.onNext(())
+                    dispatchGroup.leave()
+                }
+            }
+            dispatchGroup.notify(queue: .main) {
                 observer.onCompleted()
             }
             return Disposables.create()

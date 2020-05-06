@@ -89,6 +89,10 @@ extension SM02PhotoViewController {
 }
 
 extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.editedImage] as? UIImage else {
@@ -113,7 +117,7 @@ extension SM02PhotoViewController: UIImagePickerControllerDelegate, UINavigation
                 .subscribe(onNext: { identificationResults in
                     self.viewModel.faceDataList.accept(identificationResults)
                     ProgressHelper.shared.hide()
-                }, onError: { error in
+                }, onError: { _ in
                     ProgressHelper.shared.hide()
                 }).disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)

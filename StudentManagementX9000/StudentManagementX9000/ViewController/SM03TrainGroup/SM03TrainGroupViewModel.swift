@@ -13,7 +13,8 @@ import RxDataSources
 import ProjectOxfordFace
 
 struct Person {
-    let name: String
+    let person: MPOPerson
+    let image: UIImage
 }
 
 struct StudentSectionModel {
@@ -39,10 +40,17 @@ class SM03TrainGroupViewModel {
     }
 
     private func initPersonList() {
-        FaceApiHelper.shared.students
-            .map({$0.map({Person(name: $0.name)})})
-            .bind(to: students)
-            .disposed(by: disposeBag)
+        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] studens in
+            guard let self = self else { return }
+            var personList: [Person] = []
+            for student in studens {
+                StorageHelper.getAvatar(from: student.personId).subscribe(onNext: { image in
+                    personList.append(Person(person: student, image: image))
+                    self.students.accept(personList)
+                }).disposed(by: self.disposeBag)
+            }
+        }).disposed(by: disposeBag)
+
         students
             .map({[StudentSectionModel(header: "", items: $0)]})
             .bind(to: studensList)
