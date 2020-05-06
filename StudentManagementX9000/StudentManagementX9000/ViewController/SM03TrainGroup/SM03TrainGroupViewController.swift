@@ -61,6 +61,13 @@ class SM03TrainGroupViewController: BaseViewController {
         viewModel.studensList
             .bind(to: groupCollectionView.rx.items(dataSource: datasource))
             .disposed(by: disposeBag)
+        groupCollectionView.rx.itemSelected.asObservable().subscribe(onNext: { [weak self] indexPath in
+            guard let self = self else { return }
+            let newPersonViewController = SM04NewPersonViewController.instantiateFromStoryboard()
+            newPersonViewController.viewModel.student.accept(self.viewModel.students.value[indexPath.item].person)
+            newPersonViewController.viewModel.mode.accept(.update)
+            self.pushViewController(newPersonViewController)
+        }).disposed(by: disposeBag)
     }
 }
 

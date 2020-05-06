@@ -27,6 +27,14 @@ class SM04NewPersonViewController: BaseViewController {
         configureCollectionView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if viewModel.mode.value == .update, let student = viewModel.student.value {
+            studentNameTextField.text = student.name
+            viewModel.name.accept(student.name)
+        }
+    }
+    
     override func configureObservers() {
         studentNameTextField.rx.text
             .map { $0 ?? "" }
@@ -48,7 +56,7 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func pickImageButtonPressed(_ sender: Any) {
-        if viewModel.student.value == nil {
+        if viewModel.mode.value == .new {
             viewModel.createStudent().subscribe(onNext: {[weak self] _ in
                 guard let self = self else { return }
                 self.openImagePicker(source: .photoLibrary)
@@ -68,10 +76,7 @@ class SM04NewPersonViewController: BaseViewController {
             ProgressHelper.shared.hide()
             return
         }
-        for image in viewModel.listImage.value {
-            StorageHelper.uploadImage(of: image, at: student.personId).subscribe().disposed(by: disposeBag)
-        }
-        StorageHelper.uploadMultiImage(of: viewModel.listImage.value,
+        StorageHelper.uploadMultiImage(of: viewModel.getAdditionImage(),
                                        at: student.personId)
             .subscribe(onError: { _ in
                 ProgressHelper.shared.hide()
@@ -109,7 +114,7 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    
+
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.editedImage] as? UIImage else {

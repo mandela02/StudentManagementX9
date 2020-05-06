@@ -38,17 +38,44 @@ class SM04NewPersonViewModel {
     let listImageSectionModel: BehaviorRelay<[ImageSectionModel]> = BehaviorRelay(value: [])
     private let disposeBag = DisposeBag()
 
+    private var originalImageList: [UIImage] = []
+    
     var isNameValid: Observable<Bool> {
         return name.asObservable().map { $0 != "" }
     }
 
     init() {
-        mode.accept(.new)
         listImage
             .map({[ImageSectionModel(header: "", items: $0)]}).bind(to: listImageSectionModel)
             .disposed(by: disposeBag)
+        initData()
     }
 
+    func initData() {
+        mode.subscribe(onNext: { mode in
+            switch mode {
+            case .new:
+                break
+            case .update:
+                guard let student = self.student.value else {
+                    return
+                }
+                StorageHelper.getAllImage(of: student.personId).subscribe(onNext: { images in
+                    self.listImage.accept(images)
+                    self.originalImageList = images
+                }).disposed(by: self.disposeBag)
+            }
+        }).disposed(by: disposeBag)
+    }
+
+    func getAdditionImage() -> [UIImage] {
+        var images: [UIImage] = []
+        for image in listImage.value where originalImageList.contains(image) == false {
+            images.append(image)
+        }
+        return images
+    }
+    
     func addNewImage(image: UIImage) {
         listImage.accept(listImage.value + [image])
     }
