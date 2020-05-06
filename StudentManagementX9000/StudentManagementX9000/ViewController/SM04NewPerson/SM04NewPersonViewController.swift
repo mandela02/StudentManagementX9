@@ -19,10 +19,10 @@ class SM04NewPersonViewController: BaseViewController {
     @IBOutlet weak var pickImageButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var imageCollectionView: UICollectionView!
-    
+
     let viewModel = SM04NewPersonViewModel()
     let disposeBag = DisposeBag()
-    
+
     override func configureView() {
         configureCollectionView()
     }
@@ -38,11 +38,11 @@ class SM04NewPersonViewController: BaseViewController {
             self.pickImageButton.isEnabled = isValid
         }).disposed(by: disposeBag)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         save()
     }
-    
+
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source

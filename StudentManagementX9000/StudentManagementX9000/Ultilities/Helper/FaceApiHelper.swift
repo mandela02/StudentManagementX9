@@ -119,6 +119,7 @@ class FaceApiHelper {
                                                 name: FaceApi.studentGroupName,
                                                 userData: nil, completionBlock: { error in
                                                     if let error = error {
+                                                        observer.onError(error)
                                                         print("error: \(error.localizedDescription)")
                                                         return
                                                     }
@@ -224,32 +225,10 @@ class FaceApiHelper {
     }
 
     func trainPerson(image: UIImage, with model: MPOFace, studentId: String) -> Observable<()> {
+        let jpegData = image.jpegData(compressionQuality: 0.75)
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo:nil)
-                observable.onError(errorTemp)
-                observable.onCompleted()
-                return Disposables.create()
-            }
-            self.train(image: image,
-                       face: model,
-                       studentId: studentId)
-                .subscribe(onNext: {  _ in
-                    observable.onNext(())
-                    observable.onCompleted()
-            }, onError: { error in
-                observable.onError(error)
-                observable.onCompleted()
-                }).disposed(by: self.disposeBag)
-            return Disposables.create()
-        }
-    }
-
-    private func train(image: UIImage, face: MPOFace, studentId: String) -> Observable<()> {
-        let jpegData = image.jpegData(compressionQuality: 0.75)
-        return Observable.create { [weak self] observable in
-            guard let self = self else {
-                let errorTemp = NSError(domain:"no self", code: 404, userInfo:nil)
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
                 observable.onError(errorTemp)
                 observable.onCompleted()
                 return Disposables.create()
@@ -258,7 +237,7 @@ class FaceApiHelper {
                                        personId: studentId,
                                        data: jpegData,
                                        userData: nil,
-                                       faceRectangle: face.faceRectangle,
+                                       faceRectangle: model.faceRectangle,
                                        completionBlock: { _, error in
                                         if let error = error {
                                             observable.onError(error)
@@ -347,6 +326,8 @@ class FaceApiHelper {
                                         return
                                     }
                                     guard let collection = collection else {
+                                        let errorTemp = NSError(domain: "nil collection", code: 405, userInfo: nil)
+                                        observable.onError(errorTemp)
                                         observable.onCompleted()
                                         return
                                     }
@@ -395,7 +376,7 @@ class FaceApiHelper {
         guard let croppedImage = image.cgImage?.cropping(to: faceRect) else { return UIImage() }
         return UIImage(cgImage: croppedImage)
     }
-    
+
     private func creatFaceModelFromFace(face: MPOFace, of image: UIImage) -> FaceModel? {
         guard let faceRectangleLeft = face.faceRectangle.left,
             let faceRectangleTop = face.faceRectangle.top,

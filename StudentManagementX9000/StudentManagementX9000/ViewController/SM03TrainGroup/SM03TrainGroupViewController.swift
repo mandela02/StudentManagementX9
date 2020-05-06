@@ -40,6 +40,8 @@ class SM03TrainGroupViewController: BaseViewController {
         ProgressHelper.shared.show()
         FaceApiHelper.shared.trainGroup().subscribe(onNext: { () in
             ProgressHelper.shared.hide()
+        }, onError: { error in
+            ProgressHelper.shared.hide()
         }).disposed(by: disposeBag)
     }
 
