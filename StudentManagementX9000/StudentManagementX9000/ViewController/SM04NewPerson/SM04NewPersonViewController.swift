@@ -80,18 +80,24 @@ class SM04NewPersonViewController: BaseViewController {
                                        at: student.personId)
             .subscribe(onError: { _ in
                 ProgressHelper.shared.hide()
-            }, onCompleted: {
+            }, onCompleted: { [weak self] in
+                guard let self = self else { return }
                 FaceApiHelper.shared.updatePerson(with: self.viewModel.name.value,
                                                   of: student)
                     .subscribe(onNext: { () in
                         ProgressHelper.shared.hide()
-                    }, onError: { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }, onError: { error in
                         ProgressHelper.shared.hide()
                     }).disposed(by: self.disposeBag)
             }).disposed(by: disposeBag)
     }
 
     private func configureCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        imageCollectionView.collectionViewLayout = layout
+        
         imageCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
         let datasource = RxCollectionViewSectionedReloadDataSource<ImageSectionModel>(configureCell: { [weak self] (_, collectionView, indexPath, image) -> UICollectionViewCell in
             guard let self = self else { return UICollectionViewCell() }

@@ -15,6 +15,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         loadItem()
         deleteAllPersonButton()
+        self.navigationItem.title = "Identification"
         self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
@@ -48,7 +49,11 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
-        print("Should select viewController: \(viewController.title ?? "") ?")
+        if viewController.className == SM02PhotoViewController.className {
+            self.navigationItem.title = "Identification"
+        } else {
+            self.navigationItem.title = "Large Person Group"
+        }
         return true
     }
 }

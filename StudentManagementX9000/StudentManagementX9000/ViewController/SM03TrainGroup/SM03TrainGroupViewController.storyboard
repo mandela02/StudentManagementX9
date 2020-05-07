@@ -17,17 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Student Person Group" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7a-qD-vJY">
-                                <rect key="frame" x="20" y="64" width="374" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="o7N-T9-H65"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3Nk-to-vnj">
-                                <rect key="frame" x="10" y="124" width="394" height="688"/>
+                                <rect key="frame" x="10" y="54" width="394" height="758"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="itj-2b-rMk">
                                     <size key="itemSize" width="50" height="50"/>
@@ -104,23 +95,19 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="O7a-qD-vJY" firstAttribute="leading" secondItem="Ner-mY-zgl" secondAttribute="leading" constant="20" id="53A-jZ-Lbi"/>
-                            <constraint firstItem="O7a-qD-vJY" firstAttribute="top" secondItem="Ner-mY-zgl" secondAttribute="top" constant="20" id="Ewn-JM-54s"/>
                             <constraint firstItem="qcL-pe-BVn" firstAttribute="top" secondItem="3Nk-to-vnj" secondAttribute="bottom" constant="10" id="Nff-UX-AI8"/>
                             <constraint firstItem="qcL-pe-BVn" firstAttribute="bottom" secondItem="Ner-mY-zgl" secondAttribute="bottom" constant="10" id="Pn8-VP-9Wy"/>
                             <constraint firstItem="3Nk-to-vnj" firstAttribute="leading" secondItem="Ner-mY-zgl" secondAttribute="leading" constant="10" id="ahT-Ui-g92"/>
                             <constraint firstItem="Ner-mY-zgl" firstAttribute="trailing" secondItem="qcL-pe-BVn" secondAttribute="trailing" constant="10" id="fBo-vQ-h6z"/>
+                            <constraint firstItem="3Nk-to-vnj" firstAttribute="top" secondItem="Ner-mY-zgl" secondAttribute="top" constant="10" id="fZ1-1A-aRh"/>
                             <constraint firstItem="Ner-mY-zgl" firstAttribute="trailing" secondItem="3Nk-to-vnj" secondAttribute="trailing" constant="10" id="iiK-eY-u4N"/>
-                            <constraint firstItem="3Nk-to-vnj" firstAttribute="top" secondItem="O7a-qD-vJY" secondAttribute="bottom" constant="10" id="mHK-Lm-hcx"/>
                             <constraint firstItem="qcL-pe-BVn" firstAttribute="leading" secondItem="Ner-mY-zgl" secondAttribute="leading" constant="10" id="pos-zX-zZa"/>
-                            <constraint firstItem="O7a-qD-vJY" firstAttribute="centerX" secondItem="Y6W-8w-w8e" secondAttribute="centerX" id="xG7-aE-huu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ner-mY-zgl"/>
                     </view>
                     <connections>
                         <outlet property="addPersonButton" destination="sJK-DU-LJK" id="Wxm-3D-qh8"/>
                         <outlet property="groupCollectionView" destination="3Nk-to-vnj" id="uyp-SV-bXr"/>
-                        <outlet property="groupNameLabel" destination="O7a-qD-vJY" id="1S9-Xa-C4y"/>
                         <outlet property="saveButton" destination="r0O-qR-ziO" id="p3P-h1-eXu"/>
                     </connections>
                 </viewController>

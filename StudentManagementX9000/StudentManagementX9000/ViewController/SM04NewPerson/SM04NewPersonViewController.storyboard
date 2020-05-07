@@ -37,7 +37,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NX6-BD-8Od">
-                                <rect key="frame" x="10" y="802" width="394" height="50"/>
+                                <rect key="frame" x="10" y="792" width="394" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqs-7i-AoD">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="50"/>
@@ -59,7 +59,7 @@
                                 </constraints>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KQK-Yj-C6P">
-                                <rect key="frame" x="10" y="114" width="394" height="678"/>
+                                <rect key="frame" x="10" y="114" width="394" height="668"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="paC-xj-Vbx">
                                     <size key="itemSize" width="50" height="50"/>
@@ -68,7 +68,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewPersonCell" id="EKf-d4-cJN" customClass="SM04NewPersionCollectionViewCell" customModule="StudentManagementX9000" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="NewPersonCell" id="EKf-d4-cJN" customClass="SM04NewPersionCollectionViewCell" customModule="StudentManagementX9000" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Mu8-TM-F4H">
@@ -105,7 +105,7 @@
                             <constraint firstItem="NX6-BD-8Od" firstAttribute="centerX" secondItem="cys-Uc-VEU" secondAttribute="centerX" id="Mcf-MP-KjZ"/>
                             <constraint firstItem="bZc-yb-LeE" firstAttribute="leading" secondItem="3Km-nO-3dv" secondAttribute="leading" constant="10" id="V7q-a9-mAl"/>
                             <constraint firstItem="3Km-nO-3dv" firstAttribute="trailing" secondItem="KQK-Yj-C6P" secondAttribute="trailing" constant="10" id="fIe-lg-TN3"/>
-                            <constraint firstItem="3Km-nO-3dv" firstAttribute="bottom" secondItem="NX6-BD-8Od" secondAttribute="bottom" constant="10" id="h0S-72-MlL"/>
+                            <constraint firstItem="3Km-nO-3dv" firstAttribute="bottom" secondItem="NX6-BD-8Od" secondAttribute="bottom" constant="20" id="h0S-72-MlL"/>
                             <constraint firstItem="KQK-Yj-C6P" firstAttribute="top" secondItem="bZc-yb-LeE" secondAttribute="bottom" constant="10" id="n8C-hI-xA1"/>
                             <constraint firstItem="3Km-nO-3dv" firstAttribute="trailing" secondItem="bZc-yb-LeE" secondAttribute="trailing" constant="10" id="nr8-Yy-bdc"/>
                             <constraint firstItem="bZc-yb-LeE" firstAttribute="top" secondItem="3Km-nO-3dv" secondAttribute="top" constant="10" id="oSi-0J-MqW"/>

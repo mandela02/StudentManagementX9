@@ -39,7 +39,7 @@ class SM04NewPersonViewModel {
     private let disposeBag = DisposeBag()
 
     private var originalImageList: [UIImage] = []
-    
+
     var isNameValid: Observable<Bool> {
         return name.asObservable().map { $0 != "" }
     }
@@ -48,6 +48,7 @@ class SM04NewPersonViewModel {
         listImage
             .map({[ImageSectionModel(header: "", items: $0)]}).bind(to: listImageSectionModel)
             .disposed(by: disposeBag)
+//        listImage.accept([UIImage(named: "emptyAvatar")!])
         initData()
     }
 
@@ -75,7 +76,7 @@ class SM04NewPersonViewModel {
         }
         return images
     }
-    
+
     func addNewImage(image: UIImage) {
         listImage.accept(listImage.value + [image])
     }

@@ -40,10 +40,14 @@ class SM03TrainGroupViewModel {
     }
 
     private func initPersonList() {
-        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] studens in
+        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] students in
             guard let self = self else { return }
             var personList: [Person] = []
-            for student in studens {
+            guard students.count != 0 else {
+                self.students.accept(personList)
+                return
+            }
+            for student in students {
                 StorageHelper.getAvatar(from: student.personId).subscribe(onNext: { image in
                     personList.append(Person(person: student, image: image))
                     self.students.accept(personList)
