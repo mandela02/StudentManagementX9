@@ -56,14 +56,38 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func pickImageButtonPressed(_ sender: Any) {
-        if viewModel.mode.value == .new {
+        if viewModel.student.value == nil {
             viewModel.createStudent().subscribe(onNext: {[weak self] _ in
                 guard let self = self else { return }
-                self.openImagePicker(source: .photoLibrary)
+                self.openActionSheet()
             }).disposed(by: disposeBag)
         } else {
-            self.openImagePicker(source: .photoLibrary)
+            self.openActionSheet()
         }
+    }
+
+    private func openActionSheet() {
+        let preferredStyle = UIAlertController.Style.actionSheet
+        let alertController = UIAlertController(title: title,
+                                            message: "Choose Option",
+                                            preferredStyle: preferredStyle)
+
+        let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.openImagePicker(source: .camera)
+        })
+        alertController.addAction(cameraAction)
+
+        let libraryAciton = UIAlertAction(title: "Library", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.openImagePicker(source: .photoLibrary)
+        })
+        alertController.addAction(libraryAciton)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        }
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
@@ -97,7 +121,7 @@ class SM04NewPersonViewController: BaseViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         imageCollectionView.collectionViewLayout = layout
-        
+    
         imageCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
         let datasource = RxCollectionViewSectionedReloadDataSource<ImageSectionModel>(configureCell: { [weak self] (_, collectionView, indexPath, image) -> UICollectionViewCell in
             guard let self = self else { return UICollectionViewCell() }

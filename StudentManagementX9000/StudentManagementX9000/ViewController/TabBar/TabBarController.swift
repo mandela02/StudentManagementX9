@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
@@ -29,7 +32,12 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 
     @objc private func clear() {
-        FaceApiHelper.shared.deleteAllPerson()
+        ProgressHelper.shared.show()
+        FaceApiHelper.shared.deleteAllPerson().subscribe(onError: { error in
+            ProgressHelper.shared.hide()
+        }, onCompleted: {
+            ProgressHelper.shared.hide()
+        }).disposed(by: disposeBag)
     }
 
     private func loadItem() {
