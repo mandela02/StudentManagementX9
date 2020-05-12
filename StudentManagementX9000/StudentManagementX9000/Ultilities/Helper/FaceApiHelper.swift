@@ -25,7 +25,6 @@ struct IdentificationResult {
     var model: FaceModel?
 }
 
-// swiftlint:disable type_body_length
 class FaceApiHelper {
     static let shared = FaceApiHelper()
     let client = MPOFaceServiceClient(endpointAndSubscriptionKey: FaceApi.endPoint, key: FaceApi.subscriptionKey)
@@ -42,6 +41,375 @@ class FaceApiHelper {
         getAllPeople().bind(to: students).disposed(by: disposeBag)
     }
 
+    func creatPeopleGroupIfNeed() -> Observable<MPOLargePersonGroup?> {
+        return Observable.create { [weak self] observer in
+            guard let self = self else {
+                observer.onNext(nil)
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.createLargePersonGroup(FaceApi.studentGroupId,
+                                                name: FaceApi.studentGroupName,
+                                                userData: nil, completionBlock: { error in
+                                                    if let error = error {
+                                                        observer.onError(error)
+                                                        observer.onCompleted()
+                                                        print("error: \(error.localizedDescription)")
+                                                        return
+                                                    }
+                                                    let studentGroup = MPOLargePersonGroup()
+                                                    studentGroup.largePersonGroupId = FaceApi.studentGroupId
+                                                    studentGroup.name = FaceApi.studentGroupName
+                                                    observer.onNext(studentGroup)
+                                                    observer.onCompleted()
+            })
+            return Disposables.create()
+        }
+    }
+
+    private func getGroup() {
+        client?.listLargePersonGroups(completion: { [weak self] personGroups, error in
+            guard let self = self, error == nil else {
+                return
+            }
+            guard let personGroups = personGroups else {
+                return
+            }
+            if personGroups.isEmpty {
+                self.creatPeopleGroupIfNeed().subscribe(onNext: { group in
+                    self.studentGroup = group
+                }).disposed(by: self.disposeBag)
+            } else {
+                self.studentGroup = personGroups.first
+            }
+        })
+    }
+
+    func deleteAllGroup(with groupId: String) {
+        client?.deleteLargePersonGroup(groupId, completionBlock: { error in
+            if let error = error {
+                print("error: \(error.localizedDescription)")
+                return
+            }
+        })
+    }
+
+    func trainGroup() -> Observable<Void> {
+        return Observable.create { observable in
+            self.client?.trainLargePersonGroup(FaceApi.studentGroupId,
+                                               completionBlock: { error in
+                                                if let error = error {
+                                                    observable.onError(error)
+                                                    observable.onCompleted()
+                                                    print("error: \(error.localizedDescription)")
+                                                    return
+                                                }
+                                                observable.onNext(())
+                                                observable.onCompleted()
+            })
+            return Disposables.create()
+        }
+    }
+
+    func identification(with persons: [MPOFace],
+                        image: UIImage) -> Observable<[IdentificationResult]> {
+        let listFaceId = persons.map({$0.faceId})
+        var personList: [IdentificationResult] = []
+        return Observable.create { [weak self] observable -> Disposable in
+            guard let self = self else {
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.identify(withLargePersonGroupId: FaceApi.studentGroupId,
+                                  faceIds: listFaceId as [Any],
+                                  maxNumberOfCandidates: self.maxPerson,
+                                  completionBlock: { collection, error in
+                                    if let error = error {
+                                        print("error: \(error.localizedDescription)")
+                                        observable.onError(error)
+                                        observable.onCompleted()
+                                        return
+                                    }
+                                    guard let collection = collection else {
+                                        let errorTemp = NSError(domain: "nil collection", code: 405, userInfo: nil)
+                                        observable.onError(errorTemp)
+                                        observable.onCompleted()
+                                        return
+                                    }
+                                    for result in collection {
+                                        guard let idIndex = listFaceId.firstIndex(of: result.faceId) else {
+                                            continue
+                                        }
+                                        let model = self.creatFaceModelFromFace(face: persons[idIndex], of: image)
+                                        if result.candidates.count == 0 {
+                                            personList.append(IdentificationResult(person: MPOPerson(),
+                                                                                   confidence: 0.0,
+                                                                                   model: model))
+                                            continue
+                                        }
+                                        for candidate in result.candidates {
+                                            guard let candidate = candidate as? MPOCandidate else {
+                                                continue
+                                            }
+                                            let person = self.getPerson(with: candidate.personId)
+                                            let confidence = candidate.confidence.doubleValue
+                                            if let person = person {
+                                                personList
+                                                    .append(IdentificationResult(person: person,
+                                                                                       confidence: confidence,
+                                                                                       model: model))
+                                            } else {
+                                                personList.append(IdentificationResult(person: MPOPerson(),
+                                                                                       confidence: 0.0,
+                                                                                       model: model))
+                                            }
+                                        }
+                                    }
+                                    observable.onNext(personList)
+                                    observable.onCompleted()
+            })
+            return Disposables.create()
+        }
+    }
+}
+
+// Person Function
+extension FaceApiHelper {
+    func addPerson(with name: String) -> Observable<MPOPerson?> {
+        return Observable.create { [weak self] observable -> Disposable in
+            guard let self = self else {
+                observable.onNext(nil)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.createPerson(withLargePersonGroupId: FaceApi.studentGroupId,
+                                      name: name,
+                                      userData: nil,
+                                      completionBlock: { [weak self] result, error in
+                                        guard let self = self else { return }
+                                        if let error = error {
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                            print("error: \(error.localizedDescription)")
+                                            return
+                                        }
+                                        let student = MPOPerson()
+                                        student.name = name
+                                        student.personId = result?.personId
+                                        observable.onNext(student)
+                                        observable.onCompleted()
+                                        self.students.accept(self.students.value + [student])
+            })
+            return Disposables.create()
+        }
+    }
+
+    func getAllPeople() -> Observable<[MPOPerson]> {
+        return Observable.create {[weak self]  observable -> Disposable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.listPersons(withLargePersonGroupId: FaceApi.studentGroupId,
+                                     completionBlock: { allStudents, error in
+                                        if let error = error {
+                                            print("error: \(error.localizedDescription)")
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                            return
+                                        }
+                                        if let allStudents = allStudents {
+                                            observable.onNext(allStudents)
+                                        } else {
+                                            let errorTemp = NSError(domain: "no students", code: 404, userInfo: nil)
+                                            observable.onError(errorTemp)
+                                            observable.onCompleted()
+                                        }
+                                        observable.onCompleted()
+            })
+            return Disposables.create()
+        }
+    }
+
+    func deleteAllPerson() -> Observable<Void> {
+        return Observable.create {[weak self]  observable -> Disposable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.listPersons(withLargePersonGroupId: FaceApi.studentGroupId,
+                                     completionBlock: { allStudents, error in
+                                        if let error = error {
+                                            print("error: \(error.localizedDescription)")
+                                            let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                                            observable.onError(errorTemp)
+                                            observable.onCompleted()
+                                            return
+                                        }
+                                        if let allStudents = allStudents {
+                                            let dispatchGroup = DispatchGroup()
+                                            for student in allStudents {
+                                                dispatchGroup.enter()
+                                                self.deletePerson(with: student.personId).subscribe(onError: { error in
+                                                    observable.onError(error)
+                                                    observable.onCompleted()
+                                                }, onCompleted: {
+                                                    dispatchGroup.leave()
+                                                }).disposed(by: self.disposeBag)
+                                            }
+                                            dispatchGroup.notify(queue: .main) {
+                                                self.getAllPeople().subscribe(onNext: { list in
+                                                    self.students.accept(list)
+                                                }, onError: { error in
+                                                    observable.onError(error)
+                                                    observable.onCompleted()
+                                                }, onCompleted: {
+                                                    observable.onCompleted()
+                                                }).disposed(by: self.disposeBag)
+                                            }
+                                        } else {
+                                            let errorTemp = NSError(domain: "no studebts", code: 404, userInfo: nil)
+                                            observable.onError(errorTemp)
+                                            observable.onCompleted()
+                                        }
+            })
+            return Disposables.create()
+        }
+    }
+
+    func updatePerson(with name: String, of person: MPOPerson) -> Observable<Void> {
+        return Observable.create { [weak self] observable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.updatePerson(withLargePersonGroupId: FaceApi.studentGroupId,
+                                      personId: person.personId,
+                                      name: name,
+                                      userData: nil,
+                                      completionBlock: { error in
+                                        if let error = error {
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                            print("error: \(error.localizedDescription)")
+                                            return
+                                        }
+                                        self.updatePerson(new: person).subscribe(onNext: { _ in
+                                            observable.onNext(())
+                                            observable.onCompleted()
+                                        }, onError: { error in
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                        }).disposed(by: self.disposeBag)
+            })
+            return Disposables.create()
+        }
+    }
+
+    private func updatePerson(new person: MPOPerson) -> Observable<Void> {
+        return Observable.create { [weak self] observable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?
+                .getPersonWithLargePersonGroupId(FaceApi.studentGroupId,
+                                                 personId: person.personId,
+                                                 completionBlock: { newPerson, error in
+                                                    if let error = error {
+                                                        observable.onError(error)
+                                                        observable.onCompleted()
+                                                        print("error: \(error.localizedDescription)")
+                                                        return
+                                                    }
+                                                    var currentList = self.students.value
+                                                    guard let indexPath = currentList.firstIndex(of: person),
+                                                        let newPerson = newPerson else {
+                                                            let errorTemp = NSError(domain: "nil person",
+                                                                                    code: 2,
+                                                                                    userInfo: nil)
+                                                            observable.onError(errorTemp)
+                                                            observable.onCompleted()
+                                                            return
+                                                    }
+                                                    currentList[indexPath] = newPerson
+                                                    self.students.accept(currentList)
+                                                    observable.onNext(())
+                                                    observable.onCompleted()
+                })
+            return Disposables.create()
+        }
+    }
+
+    func deletePerson(with personId: String) -> Observable<()> {
+        return Observable.create { [weak self] observable -> Disposable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.deletePerson(withLargePersonGroupId: FaceApi.studentGroupId,
+                                      personId: personId, completionBlock: { error in
+                                        if let error = error {
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                            print("error: \(error.localizedDescription)")
+                                            return
+                                        }
+                                        observable.onNext(())
+                                        observable.onCompleted()
+            })
+            return Disposables.create()
+        }
+    }
+
+    private func getPerson(with personId: String) -> MPOPerson? {
+        let index = students.value.map({$0.personId}).firstIndex(of: personId)
+        if let index = index {
+            return students.value[index]
+        }
+        return nil
+    }
+
+    func trainPerson(image: UIImage, with model: MPOFace, studentId: String) -> Observable<()> {
+        let jpegData = image.jpegData(compressionQuality: 0.75)
+        return Observable.create { [weak self] observable -> Disposable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?.addPersonFace(withLargePersonGroupId: FaceApi.studentGroupId,
+                                       personId: studentId,
+                                       data: jpegData,
+                                       userData: nil,
+                                       faceRectangle: model.faceRectangle,
+                                       completionBlock: { _, error in
+                                        if let error = error {
+                                            observable.onError(error)
+                                            observable.onCompleted()
+                                        } else {
+                                            observable.onNext(())
+                                            observable.onCompleted()
+                                        }
+            })
+            return Disposables.create()
+        }
+    }
+}
+
+// Detect function
+extension FaceApiHelper {
     func detect(image: UIImage) -> Observable<[MPOFace]?> {
         let jpegData = image.jpegData(compressionQuality: 0.75)
 
@@ -60,6 +428,7 @@ class FaceApiHelper {
                                     if let error = error {
                                         print("error: \(error.localizedDescription)")
                                         observer.onError(error)
+                                        observer.onCompleted()
                                         return
                                     }
                                     observer.onNext(faceCollection)
@@ -110,346 +479,9 @@ class FaceApiHelper {
             return Disposables.create()
         }
     }
+}
 
-    func creatPeopleGroupIfNeed() -> Observable<MPOLargePersonGroup?> {
-        return Observable.create { [weak self] observer in
-            guard let self = self else {
-                observer.onNext(nil)
-                observer.onCompleted()
-                return Disposables.create()
-            }
-            self.client?.createLargePersonGroup(FaceApi.studentGroupId,
-                                                name: FaceApi.studentGroupName,
-                                                userData: nil, completionBlock: { error in
-                                                    if let error = error {
-                                                        observer.onError(error)
-                                                        print("error: \(error.localizedDescription)")
-                                                        return
-                                                    }
-                                                    let studentGroup = MPOLargePersonGroup()
-                                                    studentGroup.largePersonGroupId = FaceApi.studentGroupId
-                                                    studentGroup.name = FaceApi.studentGroupName
-                                                    observer.onNext(studentGroup)
-                                                    observer.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
-    private func getGroup() {
-        client?.listLargePersonGroups(completion: { [weak self] personGroups, error in
-            guard let self = self, error == nil else {
-                return
-            }
-            guard let personGroups = personGroups else {
-                return
-            }
-            if personGroups.isEmpty {
-                self.creatPeopleGroupIfNeed().subscribe(onNext: { group in
-                    self.studentGroup = group
-                }).disposed(by: self.disposeBag)
-            } else {
-                self.studentGroup = personGroups.first
-            }
-        })
-    }
-
-    func deleteAllGroup(with groupId: String) {
-        client?.deleteLargePersonGroup(groupId, completionBlock: { error in
-            if let error = error {
-                print("error: \(error.localizedDescription)")
-                return
-            }
-        })
-    }
-
-    func addPerson(with name: String) -> Observable<MPOPerson?> {
-        return Observable.create { [weak self] observable -> Disposable in
-            guard let self = self else {
-                observable.onNext(nil)
-                observable.onCompleted()
-                return Disposables.create()
-            }
-            self.client?.createPerson(withLargePersonGroupId: FaceApi.studentGroupId,
-                                      name: name,
-                                      userData: nil,
-                                      completionBlock: { [weak self] result, error in
-                                        guard let self = self else { return }
-                                        if let error = error {
-                                            observable.onError(error)
-                                            print("error: \(error.localizedDescription)")
-                                            return
-                                        }
-                                        let student = MPOPerson()
-                                        student.name = name
-                                        student.personId = result?.personId
-                                        observable.onNext(student)
-                                        observable.onCompleted()
-                                        self.students.accept(self.students.value + [student])
-            })
-            return Disposables.create()
-        }
-    }
-
-    func getAllPeople() -> Observable<[MPOPerson]> {
-        return Observable.create {[weak self]  observable -> Disposable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.listPersons(withLargePersonGroupId: FaceApi.studentGroupId,
-                                     completionBlock: { allStudents, error in
-                                        if let error = error {
-                                            print("error: \(error.localizedDescription)")
-                                            observable.onError(error)
-                                            return
-                                        }
-                                        if let allStudents = allStudents {
-                                            observable.onNext(allStudents)
-                                        } else {
-                                            let errorTemp = NSError(domain: "no students", code: 404, userInfo: nil)
-                                            observable.onError(errorTemp)
-                                        }
-                                        observable.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
-    func deleteAllPerson() -> Observable<Void> {
-        return Observable.create {[weak self]  observable -> Disposable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.listPersons(withLargePersonGroupId: FaceApi.studentGroupId,
-                                     completionBlock: { allStudents, error in
-                                        if let error = error {
-                                            print("error: \(error.localizedDescription)")
-                                            let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                                            observable.onError(errorTemp)
-                                            return
-                                        }
-                                        if let allStudents = allStudents {
-                                            let dispatchGroup = DispatchGroup()
-                                            for student in allStudents {
-                                                dispatchGroup.enter()
-                                                self.deletePerson(with: student.personId).subscribe(onError: { error in
-                                                    observable.onError(error)
-                                                }, onCompleted: {
-                                                    dispatchGroup.leave()
-                                                }).disposed(by: self.disposeBag)
-                                            }
-                                            dispatchGroup.notify(queue: .main) {
-                                                self.getAllPeople().subscribe(onNext: { list in
-                                                    self.students.accept(list)
-                                                }, onError: { error in
-                                                    observable.onError(error)
-                                                }, onCompleted: {
-                                                    observable.onCompleted()
-                                                }).disposed(by: self.disposeBag)
-                                            }
-                                        } else {
-                                            let errorTemp = NSError(domain: "no studebts", code: 404, userInfo: nil)
-                                            observable.onError(errorTemp)
-                                            observable.onCompleted()
-                                        }
-            })
-            return Disposables.create()
-        }
-    }
-
-    func trainPerson(image: UIImage, with model: MPOFace, studentId: String) -> Observable<()> {
-        let jpegData = image.jpegData(compressionQuality: 0.75)
-        return Observable.create { [weak self] observable -> Disposable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.addPersonFace(withLargePersonGroupId: FaceApi.studentGroupId,
-                                       personId: studentId,
-                                       data: jpegData,
-                                       userData: nil,
-                                       faceRectangle: model.faceRectangle,
-                                       completionBlock: { _, error in
-                                        if let error = error {
-                                            observable.onError(error)
-                                        } else {
-                                            observable.onNext(())
-                                            observable.onCompleted()
-                                        }
-            })
-            return Disposables.create()
-        }
-    }
-
-    func trainGroup() -> Observable<Void> {
-        return Observable.create { observable in
-            self.client?.trainLargePersonGroup(FaceApi.studentGroupId,
-                                               completionBlock: { error in
-                                                if let error = error {
-                                                    observable.onError(error)
-                                                    print("error: \(error.localizedDescription)")
-                                                    return
-                                                }
-                                                observable.onNext(())
-                                                observable.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
-    func updatePerson(with name: String, of person: MPOPerson) -> Observable<Void> {
-        return Observable.create { [weak self] observable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.updatePerson(withLargePersonGroupId: FaceApi.studentGroupId,
-                                      personId: person.personId,
-                                      name: name,
-                                      userData: nil,
-                                      completionBlock: { error in
-                                        if let error = error {
-                                            observable.onError(error)
-                                            print("error: \(error.localizedDescription)")
-                                            return
-                                        }
-                                        self.updateStudent(new: person).subscribe(onNext: { _ in
-                                            observable.onNext(())
-                                            observable.onCompleted()
-                                        }, onError: { error in
-                                            observable.onError(error)
-                                        }).disposed(by: self.disposeBag)
-            })
-            return Disposables.create()
-        }
-    }
-
-    private func updateStudent(new person: MPOPerson) -> Observable<Void> {
-        return Observable.create { [weak self] observable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.getPersonWithLargePersonGroupId(FaceApi.studentGroupId,
-                                                         personId: person.personId,
-                                                         completionBlock: { newPerson, error in
-                                                            if let error = error {
-                                                                observable.onError(error)
-                                                                print("error: \(error.localizedDescription)")
-                                                                return
-                                                            }
-                                                            var currentList = self.students.value
-                                                            guard let indexPath = currentList.firstIndex(of: person),
-                                                                let newPerson = newPerson else {
-                                                                    let errorTemp = NSError(domain: "nil person",
-                                                                                            code: 2,
-                                                                                            userInfo: nil)
-                                                                    observable.onError(errorTemp)
-                                                                    return
-                                                            }
-                                                            currentList[indexPath] = newPerson
-                                                            self.students.accept(currentList)
-                                                            observable.onNext(())
-                                                            observable.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
-    func deletePerson(with personId: String) -> Observable<()> {
-        return Observable.create { [weak self] observable -> Disposable in
-            guard let self = self else {
-                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
-                observable.onError(errorTemp)
-                return Disposables.create()
-            }
-            self.client?.deletePerson(withLargePersonGroupId: FaceApi.studentGroupId,
-                                      personId: personId, completionBlock: { error in
-                                        if let error = error {
-                                            observable.onError(error)
-                                            print("error: \(error.localizedDescription)")
-                                            return
-                                        }
-                                        observable.onNext(())
-                                        observable.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
-    private func getPerson(with personId: String) -> MPOPerson? {
-        let index = students.value.map({$0.personId}).firstIndex(of: personId)
-        if let index = index {
-            return students.value[index]
-        }
-        return nil
-    }
-
-    func identification(with persons: [MPOFace],
-                        image: UIImage) -> Observable<[IdentificationResult]> {
-        let listFaceId = persons.map({$0.faceId})
-        var personList: [IdentificationResult] = []
-        return Observable.create { [weak self] observable -> Disposable in
-            guard let self = self else {
-                observable.onCompleted()
-                return Disposables.create()
-            }
-            self.client?.identify(withLargePersonGroupId: FaceApi.studentGroupId,
-                                  faceIds: listFaceId as [Any],
-                                  maxNumberOfCandidates: self.maxPerson,
-                                  completionBlock: { collection, error in
-                                    if let error = error {
-                                        print("error: \(error.localizedDescription)")
-                                        observable.onError(error)
-                                        return
-                                    }
-                                    guard let collection = collection else {
-                                        let errorTemp = NSError(domain: "nil collection", code: 405, userInfo: nil)
-                                        observable.onError(errorTemp)
-                                        return
-                                    }
-                                    for result in collection {
-                                        guard let idIndex = listFaceId.firstIndex(of: result.faceId) else {
-                                            continue
-                                        }
-                                        let model = self.creatFaceModelFromFace(face: persons[idIndex], of: image)
-                                        if result.candidates.count == 0 {
-                                            personList.append(IdentificationResult(person: MPOPerson(),
-                                                                                   confidence: 0.0,
-                                                                                   model: model))
-                                            continue
-                                        }
-                                        for candidate in result.candidates {
-                                            guard let candidate = candidate as? MPOCandidate else {
-                                                continue
-                                            }
-                                            let person = self.getPerson(with: candidate.personId)
-                                            let confidence = candidate.confidence.doubleValue
-                                            if let person = person {
-                                                personList.append(IdentificationResult(person: person,
-                                                                                       confidence: confidence,
-                                                                                       model: model))
-                                            } else {
-                                                personList.append(IdentificationResult(person: MPOPerson(),
-                                                                                       confidence: 0.0,
-                                                                                       model: model))
-                                            }
-                                        }
-                                    }
-                                    observable.onNext(personList)
-                                    observable.onCompleted()
-            })
-            return Disposables.create()
-        }
-    }
-
+extension FaceApiHelper {
     func cutImage(from face: MPOFace, of image: UIImage) -> UIImage {
         guard let faceRectangleLeft = face.faceRectangle.left,
             let faceRectangleTop = face.faceRectangle.top,

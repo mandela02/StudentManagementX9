@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		6E88202DD8955E865DB86C9C /* Pods_StudentManagementX9000.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA52576C21192947DD90DD9 /* Pods_StudentManagementX9000.framework */; };
 		71758D4F6015B56BFA8D11D7 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */; };
+		843D37582469BF440001137E /* StudentClassInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D37572469BF440001137E /* StudentClassInformation.swift */; };
+		843D375A2469C0BC0001137E /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D37592469C0BC0001137E /* Student.swift */; };
+		843D375C2469C1D00001137E /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375B2469C1D00001137E /* Class.swift */; };
+		843D375E2469C27D0001137E /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375D2469C27D0001137E /* Teacher.swift */; };
+		843D37602469C2B80001137E /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375F2469C2B80001137E /* FirestoreHelper.swift */; };
 		90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */; };
 		90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */; };
 		90085E54244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */; };
@@ -86,6 +91,11 @@
 /* Begin PBXFileReference section */
 		46A64C73C486F63392D10F65 /* Pods_StudentManagementX9000_StudentManagementX9000UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudentManagementX9000_StudentManagementX9000UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AE37522A76F24194DD6D54 /* Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; path = "Target Support Files/Pods-StudentManagementX9000-StudentManagementX9000UITests/Pods-StudentManagementX9000-StudentManagementX9000UITests.release.xcconfig"; sourceTree = "<group>"; };
+		843D37572469BF440001137E /* StudentClassInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentClassInformation.swift; sourceTree = "<group>"; };
+		843D37592469C0BC0001137E /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		843D375B2469C1D00001137E /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
+		843D375D2469C27D0001137E /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
+		843D375F2469C2B80001137E /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
 		90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupViewModel.swift; sourceTree = "<group>"; };
 		90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupCollectionViewCell.swift; sourceTree = "<group>"; };
 		90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM04NewPersionCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -196,6 +206,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		843D37562469BCEB0001137E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				843D37572469BF440001137E /* StudentClassInformation.swift */,
+				843D37592469C0BC0001137E /* Student.swift */,
+				843D375B2469C1D00001137E /* Class.swift */,
+				843D375D2469C27D0001137E /* Teacher.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		9054380024617E1E003F5326 /* SM05TwoFace */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,6 +263,7 @@
 		90A4C1162445FD1E00BDA555 /* StudentManagementX9000 */ = {
 			isa = PBXGroup;
 			children = (
+				843D37562469BCEB0001137E /* Model */,
 				90B55DA0244C43BC0035D645 /* ViewController */,
 				90A4C1482445FF3400BDA555 /* Ultilities */,
 				90A4C1172445FD1E00BDA555 /* AppDelegate.swift */,
@@ -315,6 +337,7 @@
 				90A4C1682445FFBF00BDA555 /* StringHelper.swift */,
 				9023A7D2244B545000145CC7 /* FaceApiHelper.swift */,
 				90B198712458427600597A60 /* StorageHelper.swift */,
+				843D375F2469C2B80001137E /* FirestoreHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -695,13 +718,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				90B55DAD244CBB5C0035D645 /* SM04NewPersonViewModel.swift in Sources */,
+				843D37582469BF440001137E /* StudentClassInformation.swift in Sources */,
 				90A4C14B2445FF6100BDA555 /* String+Extension.swift in Sources */,
+				843D375C2469C1D00001137E /* Class.swift in Sources */,
 				90987D6A244B45F500411B0E /* SM02PhotoViewController.swift in Sources */,
 				90A4C15B2445FF9500BDA555 /* Calendar+Extension.swift in Sources */,
 				90A4C1582445FF8200BDA555 /* Button+Extension.swift in Sources */,
 				90A4C17B2446041C00BDA555 /* SM01LoginViewController.swift in Sources */,
 				90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */,
 				90A4C11C2445FD1E00BDA555 /* ViewController.swift in Sources */,
+				843D37602469C2B80001137E /* FirestoreHelper.swift in Sources */,
+				843D375A2469C0BC0001137E /* Student.swift in Sources */,
 				90A4C181244604DD00BDA555 /* BaseViewController.swift in Sources */,
 				9054380424617E57003F5326 /* SM05TwoFaceViewController.swift in Sources */,
 				90A4C1602445FF9E00BDA555 /* Settings.swift in Sources */,
@@ -731,6 +758,7 @@
 				90A4C1572445FF8200BDA555 /* Toolbar+Extension.swift in Sources */,
 				90B55DAB244CBA270035D645 /* SM04NewPersonViewController.swift in Sources */,
 				90A4C1702446000300BDA555 /* DateFormatterHelper.swift in Sources */,
+				843D375E2469C27D0001137E /* Teacher.swift in Sources */,
 				90A4C16E2445FFBF00BDA555 /* StringHelper.swift in Sources */,
 				9054380624618002003F5326 /* SM05TwoFaceCell.swift in Sources */,
 				90A4C16B2445FFBF00BDA555 /* InternetHelper.swift in Sources */,

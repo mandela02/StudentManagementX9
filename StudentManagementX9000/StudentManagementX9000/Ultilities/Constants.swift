@@ -25,3 +25,35 @@ struct FaceApi {
     static let studentGroupName = "Student Group"
     static let studentGroupId = "student_groud_id"
 }
+
+struct StudentFirestore {
+    static let studentCollectionName = "Students"
+    static let studentName = "StudentName"
+    static let studentId = "StudentID"
+    static let studentMail = "StudentMail"
+    static let studentPhone = "StudentPhone"
+
+    static let studentClassesCollectionName = "Classes"
+    static let studentClassId = "StudentClassId"
+    static let studentStatus = "StudentCanAttendTest"
+    static let studentMidTermScore = "StudentMidTermScore"
+    static let studentFinalScore = "StudentFinalScore"
+}
+
+struct ClassFirestore {
+    static let classCollectionName = "Classes"
+    static let classID = "ClassID"
+    static let className = "ClassName"
+    static let classRoom = "ClassRoom"
+    static let classTeacher = "ClassTeacher"
+    static let classLesson = "ClassLesson"
+    static let classTestId = "ClassTestID"
+}
+
+struct TeacherFirestore {
+    static let teacherCollectionName = "Teachers"
+    static let teacherName = "TeacherName"
+    static let teacherId = "TeacherID"
+    static let teacherMail = "TeacherMail"
+    static let teacherPhone = "TeacherPhone"
+}

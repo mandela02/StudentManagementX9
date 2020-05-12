@@ -24,9 +24,9 @@ class SM05TwoFaceViewController: BaseViewController {
     var selectedFace: MPOFace?
     var studentId = ""
     var image: UIImage?
-    
+
     let disposeBag = DisposeBag()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         imageCollectionView.delegate = self

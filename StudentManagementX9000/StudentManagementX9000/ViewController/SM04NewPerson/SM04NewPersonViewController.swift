@@ -34,7 +34,7 @@ class SM04NewPersonViewController: BaseViewController {
             viewModel.name.accept(student.name)
         }
     }
-    
+
     override func configureObservers() {
         studentNameTextField.rx.text
             .map { $0 ?? "" }
@@ -121,7 +121,7 @@ class SM04NewPersonViewController: BaseViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         imageCollectionView.collectionViewLayout = layout
-    
+
         imageCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
         let datasource = RxCollectionViewSectionedReloadDataSource<ImageSectionModel>(configureCell: { [weak self] (_, collectionView, indexPath, image) -> UICollectionViewCell in
             guard let self = self else { return UICollectionViewCell() }
