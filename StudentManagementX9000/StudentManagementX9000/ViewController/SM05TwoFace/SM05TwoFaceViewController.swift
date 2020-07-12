@@ -22,7 +22,7 @@ class SM05TwoFaceViewController: BaseViewController {
     var newPersonParentViewController: SM04NewPersonViewController?
     var faces: [MPOFace] = []
     var selectedFace: MPOFace?
-    var studentId = ""
+    var studentFaceId = ""
     var image: UIImage?
 
     let disposeBag = DisposeBag()
@@ -47,7 +47,7 @@ class SM05TwoFaceViewController: BaseViewController {
             FaceApiHelper.shared
                 .trainPerson(image: image,
                              with: selectedFace,
-                             studentId: self.studentId)
+                             studentFaceId: self.studentFaceId)
                 .subscribe().disposed(by: self.disposeBag)
         }
     }

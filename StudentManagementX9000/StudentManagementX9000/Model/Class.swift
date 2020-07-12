@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Class {
+struct Class {
     var classID = ""
     var className = ""
     var classRoom = ""

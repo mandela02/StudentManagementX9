@@ -20,7 +20,7 @@ struct Constants {
 }
 
 struct FaceApi {
-    static let subscriptionKey = "fee82920753747ab9cbae785bd83a389"
+    static let subscriptionKey = "83042c900ea245318506435334b4bfa5"
     static let endPoint = "https://eastasia.api.cognitive.microsoft.com/face/v1.0/"
     static let studentGroupName = "Student Group"
     static let studentGroupId = "student_groud_id"
@@ -32,6 +32,7 @@ struct StudentFirestore {
     static let studentId = "StudentID"
     static let studentMail = "StudentMail"
     static let studentPhone = "StudentPhone"
+    static let studentFaceId = "studentFaceId"
 
     static let studentClassesCollectionName = "Classes"
     static let studentClassId = "StudentClassId"

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class StudentClassInformation {
+struct StudentClassInformation {
     var classId = ""
     var studentStatus = true
     var midTermScore = 0.0

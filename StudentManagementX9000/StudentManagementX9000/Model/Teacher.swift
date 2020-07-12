@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Teacher {
+struct Teacher {
     var teacherName = ""
     var teacherId = ""
     var teacherMail = ""

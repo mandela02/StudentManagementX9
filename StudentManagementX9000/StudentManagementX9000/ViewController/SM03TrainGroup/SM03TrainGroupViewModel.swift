@@ -40,18 +40,25 @@ class SM03TrainGroupViewModel {
     }
 
     private func initPersonList() {
-        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] students in
+        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] studentFaceModels in
             guard let self = self else { return }
             var personList: [Person] = []
-            guard students.count != 0 else {
+            guard studentFaceModels.count != 0 else {
                 self.students.accept(personList)
                 return
             }
-            for student in students {
-                StorageHelper.getAvatar(from: student.personId).subscribe(onNext: { image in
-                    personList.append(Person(person: student, image: image))
-                    self.students.accept(personList)
-                }).disposed(by: self.disposeBag)
+            for studentFaceModel in studentFaceModels {
+                FirestoreHelper
+                    .shared
+                    .getStudent(faceID: studentFaceModel.personId)
+                    .subscribe(onNext: { student in
+                        StorageHelper
+                            .getAvatar(from: student.studentId)
+                            .subscribe(onNext: { image in
+                            personList.append(Person(person: studentFaceModel, image: image))
+                            self.students.accept(personList)
+                        }).disposed(by: self.disposeBag)
+                    }).disposed(by: self.disposeBag)
             }
         }).disposed(by: disposeBag)
 

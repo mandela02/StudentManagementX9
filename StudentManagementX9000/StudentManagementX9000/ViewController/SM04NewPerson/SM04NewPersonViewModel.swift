@@ -31,9 +31,14 @@ extension ImageSectionModel: SectionModelType {
 }
 
 class SM04NewPersonViewModel {
-    let student: BehaviorRelay<MPOPerson?> = BehaviorRelay(value: nil)
+    let studentFacePerson: BehaviorRelay<MPOPerson?> = BehaviorRelay(value: nil)
+
     let mode: BehaviorRelay<Mode> = BehaviorRelay(value: .new)
     let name: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let id: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let mail: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let phone: BehaviorRelay<String> = BehaviorRelay(value: "")
+
     let listImage: BehaviorRelay<[UIImage]> = BehaviorRelay(value: [])
     let listImageSectionModel: BehaviorRelay<[ImageSectionModel]> = BehaviorRelay(value: [])
     private let disposeBag = DisposeBag()
@@ -41,7 +46,7 @@ class SM04NewPersonViewModel {
     private var originalImageList: [UIImage] = []
 
     var isNameValid: Observable<Bool> {
-        return name.asObservable().map { $0 != "" }
+        return Observable.combineLatest(name, id).map({$1 != "" && $0 != ""})
     }
 
     init() {
@@ -58,7 +63,7 @@ class SM04NewPersonViewModel {
             case .new:
                 break
             case .update:
-                guard let student = self.student.value else {
+                guard let student = self.studentFacePerson.value else {
                     return
                 }
                 StorageHelper.getAllImage(of: student.personId).subscribe(onNext: { images in
@@ -66,6 +71,20 @@ class SM04NewPersonViewModel {
                     self.originalImageList = images
                 }).disposed(by: self.disposeBag)
             }
+        }).disposed(by: disposeBag)
+    }
+
+    func createStudent(complete: @escaping () -> Void) {
+        guard let student = self.studentFacePerson.value else {
+            return
+        }
+        FirestoreHelper.shared.uploadStudent(student: Student(id: id.value,
+                                                              name: name.value,
+                                                              mail: mail.value,
+                                                              phone: phone.value,
+                                                              faceId: student.personId))
+            .subscribe(onNext: { _ in
+                complete()
         }).disposed(by: disposeBag)
     }
 
@@ -81,7 +100,7 @@ class SM04NewPersonViewModel {
         listImage.accept(listImage.value + [image])
     }
 
-    func createStudent() -> Observable<MPOPerson?> {
+    func createStudentFaceModel() -> Observable<MPOPerson?> {
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
                 observable.onNext(nil)
@@ -95,7 +114,7 @@ class SM04NewPersonViewModel {
                     }
                     observable.onNext(person)
                     observable.onCompleted()
-                    self.student.accept(person)
+                    self.studentFacePerson.accept(person)
                 }).disposed(by: self.disposeBag)
             } 
             return Disposables.create()

@@ -38,7 +38,7 @@ class FaceApiHelper {
 
     private init() {
         getGroup()
-        getAllPeople().bind(to: students).disposed(by: disposeBag)
+        //getAllPeople().bind(to: students).disposed(by: disposeBag)
     }
 
     func creatPeopleGroupIfNeed() -> Observable<MPOLargePersonGroup?> {
@@ -78,9 +78,11 @@ class FaceApiHelper {
             if personGroups.isEmpty {
                 self.creatPeopleGroupIfNeed().subscribe(onNext: { group in
                     self.studentGroup = group
+                    self.getAllPeople().bind(to: self.students).disposed(by: self.disposeBag)
                 }).disposed(by: self.disposeBag)
             } else {
                 self.studentGroup = personGroups.first
+                self.getAllPeople().bind(to: self.students).disposed(by: self.disposeBag)
             }
         })
     }
@@ -380,7 +382,7 @@ extension FaceApiHelper {
         return nil
     }
 
-    func trainPerson(image: UIImage, with model: MPOFace, studentId: String) -> Observable<()> {
+    func trainPerson(image: UIImage, with model: MPOFace, studentFaceId: String) -> Observable<()> {
         let jpegData = image.jpegData(compressionQuality: 0.75)
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
@@ -390,7 +392,7 @@ extension FaceApiHelper {
                 return Disposables.create()
             }
             self.client?.addPersonFace(withLargePersonGroupId: FaceApi.studentGroupId,
-                                       personId: studentId,
+                                       personId: studentFaceId,
                                        data: jpegData,
                                        userData: nil,
                                        faceRectangle: model.faceRectangle,
