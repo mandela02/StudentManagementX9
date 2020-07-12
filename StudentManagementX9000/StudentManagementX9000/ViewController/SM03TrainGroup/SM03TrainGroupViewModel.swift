@@ -39,8 +39,11 @@ class SM03TrainGroupViewModel {
         initObserverse()
     }
     private func initObserverse() {
-        FirestoreHelper.shared.startListening { (students) in
+        FirestoreHelper.shared.listenToChange { (students) in
             var personList: [Person] = []
+            if students.isEmpty {
+                self.students.accept([])
+            }
             for student in students {
                 StorageHelper
                     .getAvatar(from: student.studentId)
@@ -49,10 +52,12 @@ class SM03TrainGroupViewModel {
                         self.students.accept(personList)
                     }).disposed(by: self.disposeBag)
             }
-            self.students
-                .map({[StudentSectionModel(header: "", items: $0)]})
-                .bind(to: self.studensList)
-                .disposed(by: self.disposeBag)
+            FaceApiHelper.shared.trainGroup().subscribe().disposed(by: self.disposeBag)
         }
+
+        self.students
+            .map({[StudentSectionModel(header: "", items: $0)]})
+            .bind(to: self.studensList)
+            .disposed(by: self.disposeBag)
     }
 }

@@ -76,7 +76,7 @@ class SM04NewPersonViewController: BaseViewController {
             self.pickImageButton.isEnabled = isValid
         }).disposed(by: disposeBag)
     }
-
+    
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -86,14 +86,7 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func pickImageButtonPressed(_ sender: Any) {
-        if viewModel.studentFacePerson.value == nil {
-            viewModel.createStudentFaceModel().subscribe(onNext: {[weak self] _ in
-                guard let self = self else { return }
-                self.openActionSheet()
-            }).disposed(by: disposeBag)
-        } else {
-            self.openActionSheet()
-        }
+        self.openActionSheet()
     }
 
     private func openActionSheet() {
@@ -121,32 +114,42 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
-        viewModel.createStudent(complete: {
-            self.save()
-        })
+        createAndSave()
+    }
+
+    func createAndSave() {
+        ProgressHelper.shared.show()
+            StorageHelper.uploadMultiImage(of: viewModel.getAdditionImage(),
+                                           at: viewModel.id.value)
+                .subscribe(onError: { _ in
+                    ProgressHelper.shared.hide()
+                }, onCompleted: { [weak self] in
+                    guard let self = self else { return }
+                    self.viewModel.createStudentFaceModel().subscribe(onNext: { [weak self] person in
+                        guard let self = self else { return }
+                        guard let person = person else { return }
+                        self.viewModel.trainPerson(of: person.personId) {
+                            self.viewModel.createStudent {
+                                self.save()
+                            }
+                        }
+                    }).disposed(by: self.disposeBag)
+                }).disposed(by: disposeBag)
     }
 
     private func save() {
-        ProgressHelper.shared.show()
         guard let studentFaceModel = viewModel.studentFacePerson.value else {
             ProgressHelper.shared.hide()
             return
         }
-        StorageHelper.uploadMultiImage(of: viewModel.getAdditionImage(),
-                                       at: viewModel.id.value)
-            .subscribe(onError: { _ in
+        FaceApiHelper.shared.updatePerson(with: self.viewModel.name.value,
+                                          of: studentFaceModel)
+            .subscribe(onNext: { () in
                 ProgressHelper.shared.hide()
-            }, onCompleted: { [weak self] in
-                guard let self = self else { return }
-                FaceApiHelper.shared.updatePerson(with: self.viewModel.name.value,
-                                                  of: studentFaceModel)
-                    .subscribe(onNext: { () in
-                        ProgressHelper.shared.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }, onError: { error in
-                        ProgressHelper.shared.hide()
-                    }).disposed(by: self.disposeBag)
-            }).disposed(by: disposeBag)
+                self.navigationController?.popViewController(animated: true)
+            }, onError: { _ in
+                ProgressHelper.shared.hide()
+            }).disposed(by: self.disposeBag)
     }
 
     private func configureCollectionView() {
@@ -183,9 +186,6 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
             return
         }
         picker.dismiss(animated: true, completion: nil)
-        guard let student = viewModel.studentFacePerson.value else {
-            return
-        }
         ProgressHelper.shared.show()
         FaceApiHelper.shared.detect(image: image).subscribe(onNext: { [weak self] faces in
             guard let self = self else { return }
@@ -204,20 +204,15 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
                 twoFaceViewController.modalPresentationStyle = .overFullScreen
                 twoFaceViewController.modalTransitionStyle = .crossDissolve
                 twoFaceViewController.faces = faces
-                twoFaceViewController.studentFaceId = student.personId
                 twoFaceViewController.image = image
                 twoFaceViewController.newPersonParentViewController = self
                 self.present(twoFaceViewController, animated: true, completion: nil)
             } else {
                 guard let face = faces.first else { return }
-                self.viewModel.addNewImage(image: FaceApiHelper.shared.cutImage(from: face, of: image))
-                FaceApiHelper.shared.trainPerson(image: image ,
-                                                 with: face,
-                                                 studentFaceId: student.personId).subscribe(onNext: { _ in
-                                                    ProgressHelper.shared.hide()
-                                                 }, onError: { _ in
-                                                    ProgressHelper.shared.hide()
-                                                 }).disposed(by: self.disposeBag)
+                let croppedImage = FaceApiHelper.shared.cutImage(from: face, of: image)
+                self.viewModel.addNewImage(image: ImageFace(image: image, face: face))
+                self.viewModel.addCroppedImage(image: croppedImage)
+                ProgressHelper.shared.hide()
             }
             }, onError: { _ in
                 ProgressHelper.shared.hide()

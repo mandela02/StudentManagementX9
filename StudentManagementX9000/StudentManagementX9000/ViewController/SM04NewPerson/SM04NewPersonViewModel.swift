@@ -18,6 +18,11 @@ enum Mode {
     case update
 }
 
+struct ImageFace {
+    var image: UIImage
+    var face: MPOFace
+}
+
 struct ImageSectionModel {
     var header: String
     var items: [UIImage]
@@ -39,8 +44,11 @@ class SM04NewPersonViewModel {
     let mail: BehaviorRelay<String> = BehaviorRelay(value: "")
     let phone: BehaviorRelay<String> = BehaviorRelay(value: "")
 
-    let listImage: BehaviorRelay<[UIImage]> = BehaviorRelay(value: [])
+    let listImage: BehaviorRelay<[ImageFace]> = BehaviorRelay(value: [])
     let listImageSectionModel: BehaviorRelay<[ImageSectionModel]> = BehaviorRelay(value: [])
+
+    let croppedList: BehaviorRelay<[UIImage]> = BehaviorRelay(value: [])
+
     private let disposeBag = DisposeBag()
 
     private var originalImageList: [UIImage] = []
@@ -50,7 +58,7 @@ class SM04NewPersonViewModel {
     }
 
     init() {
-        listImage
+        croppedList
             .map({[ImageSectionModel(header: "", items: $0)]}).bind(to: listImageSectionModel)
             .disposed(by: disposeBag)
         initData()
@@ -67,8 +75,8 @@ class SM04NewPersonViewModel {
                     return
                 }
                 StorageHelper.getAllImage(of: student.studentId).subscribe(onNext: { images in
-                    self.listImage.accept(images)
                     self.originalImageList = images
+                    self.croppedList.accept(images)
                 }).disposed(by: self.disposeBag)
             }
         }).disposed(by: disposeBag)
@@ -104,14 +112,37 @@ class SM04NewPersonViewModel {
 
     func getAdditionImage() -> [UIImage] {
         var images: [UIImage] = []
-        for image in listImage.value where originalImageList.contains(image) == false {
+        for image in croppedList.value where originalImageList.contains(image) == false {
             images.append(image)
         }
         return images
     }
 
-    func addNewImage(image: UIImage) {
+    func addNewImage(image: ImageFace) {
         listImage.accept(listImage.value + [image])
+    }
+
+    func addCroppedImage(image: UIImage) {
+        croppedList.accept(croppedList.value + [image])
+    }
+
+    func trainPerson(of faceId: String, complete: @escaping () -> Void) {
+        if listImage.value.isEmpty {
+            complete()
+            return
+        }
+        let dispatchGroup = DispatchGroup()
+        for imageFace in listImage.value {
+            dispatchGroup.enter()
+            FaceApiHelper.shared
+                .trainPerson(image: imageFace.image, with: imageFace.face, studentFaceId: faceId)
+                .subscribe(onNext: { _ in
+                    dispatchGroup.leave()
+                }).disposed(by: disposeBag)
+        }
+        dispatchGroup.notify(queue: .main) {
+            complete()
+        }
     }
 
     func createStudentFaceModel() -> Observable<MPOPerson?> {
@@ -126,11 +157,14 @@ class SM04NewPersonViewModel {
                     guard let self = self, let person = person else {
                         return
                     }
+                    self.studentFacePerson.accept(person)
                     observable.onNext(person)
                     observable.onCompleted()
-                    self.studentFacePerson.accept(person)
                 }).disposed(by: self.disposeBag)
-            } 
+            } else {
+                observable.onNext(self.studentFacePerson.value)
+                observable.onCompleted()
+            }
             return Disposables.create()
         }
     }

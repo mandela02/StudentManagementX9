@@ -33,11 +33,13 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     @objc private func clear() {
         ProgressHelper.shared.show()
-        FaceApiHelper.shared.deleteAllPerson().subscribe(onError: { error in
-            ProgressHelper.shared.hide()
-        }, onCompleted: {
-            ProgressHelper.shared.hide()
-        }).disposed(by: disposeBag)
+        FirestoreHelper.shared.deleteAll {
+            FaceApiHelper.shared.deleteAllPerson().subscribe(onError: { error in
+                ProgressHelper.shared.hide()
+            }, onCompleted: {
+                ProgressHelper.shared.hide()
+            }).disposed(by: self.disposeBag)
+        }
     }
 
     private func loadItem() {

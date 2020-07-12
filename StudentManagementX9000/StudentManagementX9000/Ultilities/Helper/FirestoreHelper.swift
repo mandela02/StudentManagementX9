@@ -180,6 +180,45 @@ class FirestoreHelper {
         }
     }
 
+    
+    func getAllDocument(_ callback: @escaping ([Student]) -> Void) {
+        self.database
+            .collection(StudentFirestore.studentCollectionName)
+            .getDocuments(completion: { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            guard let snapshot = querySnapshot else {
+                print("Error retreiving snapshot: \(error!)")
+                return
+            }
+            var dataList: [Student] = []
+            for document in snapshot.documents {
+                dataList.append(self.getStudentData(from: document.data()))
+            }
+            callback(dataList)
+        })
+    }
+
+    func deleteAll(_ complete: @escaping () -> Void) {
+        getAllDocument { [weak self] (dataList) in
+            guard let self = self else { return }
+            for data in dataList {
+                self.delete(at: data.studentId)
+            }
+            complete()
+        }
+    }
+
+    func delete(at documentId: String, _ complete: ((Error?) -> Void)? = nil) {
+        self.database
+            .collection(StudentFirestore.studentCollectionName)
+            .document(documentId).delete(completion: { error in
+                guard let err = error else {
+                    complete?(nil)
+                    return
+                }
+                complete?(err)
+            })
+    }
 }
 
 // listen to student change
@@ -205,6 +244,19 @@ extension FirestoreHelper {
         guard let query = query else { return }
         stopListening()
         listener = query
+            .addSnapshotListener(includeMetadataChanges: true) { [weak self] querySnapshot, error in
+                guard let self = self else { return }
+                guard let snapshot = querySnapshot else {
+                    print("Error retreiving snapshot: \(error!)")
+                    return
+                }
+                complete(snapshot.documents.map({self.getStudentData(from: $0.data())}))
+        }
+    }
+
+    func listenToChange(_ complete: @escaping ([Student]) -> Void) {
+        self.database
+            .collection(StudentFirestore.studentCollectionName)
             .addSnapshotListener(includeMetadataChanges: true) { [weak self] querySnapshot, error in
                 guard let self = self else { return }
                 guard let snapshot = querySnapshot else {

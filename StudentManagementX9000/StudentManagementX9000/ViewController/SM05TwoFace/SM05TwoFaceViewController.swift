@@ -22,7 +22,6 @@ class SM05TwoFaceViewController: BaseViewController {
     var newPersonParentViewController: SM04NewPersonViewController?
     var faces: [MPOFace] = []
     var selectedFace: MPOFace?
-    var studentFaceId = ""
     var image: UIImage?
 
     let disposeBag = DisposeBag()
@@ -43,12 +42,8 @@ class SM05TwoFaceViewController: BaseViewController {
             }
             let croppedImage = FaceApiHelper.shared.cutImage(from: selectedFace, of: image)
             self.newPersonParentViewController?.viewModel
-                .addNewImage(image: croppedImage)
-            FaceApiHelper.shared
-                .trainPerson(image: image,
-                             with: selectedFace,
-                             studentFaceId: self.studentFaceId)
-                .subscribe().disposed(by: self.disposeBag)
+                .addNewImage(image: ImageFace(image: image, face: selectedFace))
+            self.newPersonParentViewController?.viewModel.addCroppedImage(image: croppedImage)
         }
     }
 }

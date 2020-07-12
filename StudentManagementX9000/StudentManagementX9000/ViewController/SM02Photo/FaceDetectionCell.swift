@@ -26,17 +26,17 @@ class FaceDetectionCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configureCell(with model: IdentificationResult) {
-        guard model.confidence != 0.0 else {
-            faceImageView.image = model.model?.faceImage
+    func configureCell(with model: PhotoCell) {
+        guard model.result.confidence != 0.0 else {
+            faceImageView.image = model.result.model?.faceImage
             genderLabel.text = "Not Found"
             emotionLabel.text = "Not Found"
             ageLabel.text = "Not Found"
             return
         }
-        faceImageView.image = model.model?.faceImage
-        genderLabel.text = model.person.name
-        emotionLabel.text = model.person.personId
-        ageLabel.text = "confidence \(model.confidence)"
+        faceImageView.image = model.result.model?.faceImage
+        genderLabel.text = "Student name: \(model.student.studentName)"
+        emotionLabel.text = "Mail: \(model.student.studentMail)"
+        ageLabel.text = "ID Number: \(model.student.studentId)"
     }
 }
