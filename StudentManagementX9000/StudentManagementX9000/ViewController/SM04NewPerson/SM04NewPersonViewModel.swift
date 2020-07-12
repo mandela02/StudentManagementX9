@@ -25,11 +25,11 @@ struct ImageFace {
 
 struct ImageSectionModel {
     var header: String
-    var items: [UIImage]
+    var items: [StorageImage]
 }
 
 extension ImageSectionModel: SectionModelType {
-    init(original: ImageSectionModel, items: [UIImage]) {
+    init(original: ImageSectionModel, items: [StorageImage]) {
         self = original
         self.items = items
     }
@@ -47,12 +47,14 @@ class SM04NewPersonViewModel {
     let listImage: BehaviorRelay<[ImageFace]> = BehaviorRelay(value: [])
     let listImageSectionModel: BehaviorRelay<[ImageSectionModel]> = BehaviorRelay(value: [])
 
-    let croppedList: BehaviorRelay<[UIImage]> = BehaviorRelay(value: [])
-
     private let disposeBag = DisposeBag()
 
-    private var originalImageList: [UIImage] = []
+    private var originalImageList: [StorageImage] = []
+    let croppedList: BehaviorRelay<[StorageImage]> = BehaviorRelay(value: [])
 
+    let isInDeleteMode: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    var deletedImage: [StorageImage] = []
+    
     var isNameValid: Observable<Bool> {
         return Observable.combineLatest(name, id).map({!$1.isEmpty && !$0.isEmpty})
     }
@@ -112,7 +114,8 @@ class SM04NewPersonViewModel {
 
     func getAdditionImage() -> [UIImage] {
         var images: [UIImage] = []
-        for image in croppedList.value where originalImageList.contains(image) == false {
+        let originalImages = originalImageList.map({$0.image})
+        for image in croppedList.value.map({$0.image}) where originalImages.contains(image) == false {
             images.append(image)
         }
         return images
@@ -122,7 +125,7 @@ class SM04NewPersonViewModel {
         listImage.accept(listImage.value + [image])
     }
 
-    func addCroppedImage(image: UIImage) {
+    func addCroppedImage(image: StorageImage) {
         croppedList.accept(croppedList.value + [image])
     }
 
@@ -166,6 +169,45 @@ class SM04NewPersonViewModel {
                 observable.onCompleted()
             }
             return Disposables.create()
+        }
+    }
+    
+    func select(at indexPath: IndexPath) {
+        var list = croppedList.value
+        if croppedList.value.filter({$0.isSelected}).count + 1 == croppedList.value.count {
+            list[indexPath.item].isSelected = false
+            croppedList.accept(list)
+            return
+        }
+        list[indexPath.item].isSelected = !list[indexPath.item].isSelected
+        croppedList.accept(list)
+    }
+
+    func deselectEverything() {
+        if isInDeleteMode.value {
+            let list = croppedList.value
+            croppedList.accept(list.map({StorageImage(name: $0.name, image: $0.image, isSelected: false)}))
+        }
+    }
+
+    func deleteImage() {
+        let deletedImages = croppedList.value.filter({$0.isSelected})
+        var fullImage = croppedList.value
+        for image in deletedImages {
+            guard let index = fullImage.firstIndex(where: {$0.name == image.name}) else {
+                return
+            }
+            fullImage.remove(at: index)
+            deletedImage.append(image)
+        }
+        croppedList.accept(fullImage)
+    }
+
+    func deleteStoreImage() {
+        for image in deletedImage {
+            if let name = image.name {
+                StorageHelper.deleteImage(with: name, of: id.value).subscribe().disposed(by: disposeBag)
+            }
         }
     }
 }

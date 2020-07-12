@@ -31,6 +31,11 @@ class SM03TrainGroupViewController: BaseViewController {
     override func configureObservers() {
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.refreshData()
+    }
+
     @IBAction func addPersonButtonPressed(_ sender: Any) {
         let newPersonViewCOntroller = SM04NewPersonViewController.instantiateFromStoryboard()
         pushViewController(newPersonViewCOntroller)

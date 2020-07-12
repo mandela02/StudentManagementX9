@@ -43,7 +43,8 @@ class SM05TwoFaceViewController: BaseViewController {
             let croppedImage = FaceApiHelper.shared.cutImage(from: selectedFace, of: image)
             self.newPersonParentViewController?.viewModel
                 .addNewImage(image: ImageFace(image: image, face: selectedFace))
-            self.newPersonParentViewController?.viewModel.addCroppedImage(image: croppedImage)
+            self.newPersonParentViewController?.viewModel
+                .addCroppedImage(image: StorageImage(name: nil, image: croppedImage))
         }
     }
 }

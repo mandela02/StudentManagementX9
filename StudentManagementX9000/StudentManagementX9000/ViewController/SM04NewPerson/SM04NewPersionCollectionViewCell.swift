@@ -13,8 +13,16 @@ class SM04NewPersionCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraints: NSLayoutConstraint!
 
-    func configureCell(with image: UIImage) {
-        imageView.image = image
+    func configureCell(with image: StorageImage) {
+        imageView.image = image.image
         imageWidthConstraints.constant = self.frame.size.height
+        if image.isSelected {
+            imageView.addBorders(edges: .all,
+                                 color: .red,
+                                 inset: 0,
+                                 thickness: 5)
+        } else {
+            imageView.removeAllSubviews()
+        }
     }
 }

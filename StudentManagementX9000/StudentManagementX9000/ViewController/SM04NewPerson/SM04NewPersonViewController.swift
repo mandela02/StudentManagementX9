@@ -19,7 +19,6 @@ class SM04NewPersonViewController: BaseViewController {
     @IBOutlet weak var pickImageButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var imageCollectionView: UICollectionView!
-
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var mailTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
@@ -29,6 +28,7 @@ class SM04NewPersonViewController: BaseViewController {
 
     override func configureView() {
         configureCollectionView()
+        deleteImageButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -43,6 +43,7 @@ class SM04NewPersonViewController: BaseViewController {
             phoneTextField.text         = student.studentPhone
             phoneTextField.sendActions(for: .valueChanged)
         }
+        initPress()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -75,8 +76,26 @@ class SM04NewPersonViewController: BaseViewController {
             self.saveButton.isEnabled = isValid
             self.pickImageButton.isEnabled = isValid
         }).disposed(by: disposeBag)
-    }
+
+        viewModel.isInDeleteMode.subscribe(onNext: { [weak self] isInDeleteMode in
+            guard let self = self else { return }
+            self.studentNameTextField.isEnabled = !isInDeleteMode
+            self.idTextField.isEnabled = !isInDeleteMode
+            self.mailTextField.isEnabled = !isInDeleteMode
+            self.phoneTextField.isEnabled = !isInDeleteMode
+            self.saveButton.isEnabled = !isInDeleteMode &&
+                !self.viewModel.id.value.isEmpty &&
+                !self.viewModel.name.value.isEmpty
+            self.pickImageButton.isEnabled = !isInDeleteMode &&
+                !self.viewModel.id.value.isEmpty &&
+                !self.viewModel.name.value.isEmpty
+
+            self.navigationItem.rightBarButtonItem?.title = isInDeleteMode ? "Delete" : ""
+            self.navigationItem.rightBarButtonItem?.isEnabled = isInDeleteMode
     
+            }).disposed(by: disposeBag)
+    }
+
     private func openImagePicker(source: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -130,6 +149,7 @@ class SM04NewPersonViewController: BaseViewController {
                         guard let person = person else { return }
                         self.viewModel.trainPerson(of: person.personId) {
                             self.viewModel.createStudent {
+                                self.viewModel.deleteStoreImage()
                                 self.save()
                             }
                         }
@@ -152,6 +172,45 @@ class SM04NewPersonViewController: BaseViewController {
             }).disposed(by: self.disposeBag)
     }
 
+    private func deleteImageButton() {
+        let clearBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(clear))
+        navigationItem.rightBarButtonItem = clearBarButtonItem
+    }
+
+    @objc private func clear() {
+        viewModel.isInDeleteMode.accept(false)
+        viewModel.deleteImage()
+    }
+
+    private func initPress() {
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPress(gesture:)))
+        self.imageCollectionView.addGestureRecognizer(longPressRecognizer)
+        let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(normalPress(gesture:)))
+        pressRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(pressRecognizer)
+    }
+
+    @objc func longPress(gesture: UILongPressGestureRecognizer) {
+        if gesture.state != .ended {
+            return
+        }
+
+        let touchPoint = gesture.location(in: self.imageCollectionView)
+        if let indexPath = imageCollectionView.indexPathForItem(at: touchPoint) {
+            viewModel.isInDeleteMode.accept(true)
+            self.viewModel.select(at: indexPath)
+        }
+    }
+
+    @objc func normalPress(gesture: UITapGestureRecognizer) {
+        let touchPoint = gesture.location(in: self.imageCollectionView)
+        if let indexPath = imageCollectionView.indexPathForItem(at: touchPoint) { return }
+        if viewModel.isInDeleteMode.value {
+            viewModel.deselectEverything()
+            viewModel.isInDeleteMode.accept(false)
+        }
+    }
+
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -172,6 +231,13 @@ class SM04NewPersonViewController: BaseViewController {
         viewModel.listImageSectionModel
             .bind(to: imageCollectionView.rx.items(dataSource: datasource))
             .disposed(by: disposeBag)
+
+        imageCollectionView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            guard let self = self else { return }
+            if self.viewModel.isInDeleteMode.value {
+                self.viewModel.select(at: indexPath)
+            }
+        }).disposed(by: disposeBag)
     }
 }
 
@@ -211,7 +277,7 @@ extension SM04NewPersonViewController: UIImagePickerControllerDelegate, UINaviga
                 guard let face = faces.first else { return }
                 let croppedImage = FaceApiHelper.shared.cutImage(from: face, of: image)
                 self.viewModel.addNewImage(image: ImageFace(image: image, face: face))
-                self.viewModel.addCroppedImage(image: croppedImage)
+                self.viewModel.addCroppedImage(image: StorageImage(name: nil, image: croppedImage))
                 ProgressHelper.shared.hide()
             }
             }, onError: { _ in

@@ -12,6 +12,12 @@ import RxSwift
 import RxCocoa
 import UIKit
 
+struct StorageImage {
+    var name: String?
+    var image: UIImage
+    var isSelected: Bool = false
+}
+
 class StorageHelper {
     private static let storage = Storage.storage()
     private static var storageRef: StorageReference {
@@ -70,9 +76,9 @@ class StorageHelper {
         }
     }
 
-    static func getAllImage(of lib: String) -> Observable<[UIImage]> {
+    static func getAllImage(of lib: String) -> Observable<[StorageImage]> {
         return Observable.create { observer in
-            var images: [UIImage] = []
+            var images: [StorageImage] = []
             storageRef.child(lib).listAll { results, error in
                 if let error = error {
                     print("Error \(error)")
@@ -85,7 +91,7 @@ class StorageHelper {
                         guard let image = image else {
                             return
                         }
-                        images.append(image)
+                        images.append(StorageImage(name: result.name, image: image))
                         observer.onNext(images)
                         }).disposed(by: disposeBag)
                 }
@@ -141,6 +147,21 @@ class StorageHelper {
             }
             dispatchGroup.notify(queue: .main) {
                 observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
+    static func deleteImage(with name: String, of lib: String) -> Observable<Bool> {
+        return Observable.create { observer in
+            storageRef.child(lib).child(name).delete { error in
+                if let _ = error {
+                    observer.onNext(false)
+                    observer.onCompleted()
+                } else {
+                    observer.onNext(true)
+                    observer.onCompleted()
+                }
             }
             return Disposables.create()
         }

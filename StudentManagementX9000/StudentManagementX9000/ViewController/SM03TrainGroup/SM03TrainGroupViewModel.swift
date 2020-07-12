@@ -60,4 +60,17 @@ class SM03TrainGroupViewModel {
             .bind(to: self.studensList)
             .disposed(by: self.disposeBag)
     }
+
+    func refreshData() {
+        let localStudents = students.value
+        var personList: [Person] = []
+        for student in localStudents {
+            StorageHelper
+                .getAvatar(from: student.person.studentId)
+                .subscribe(onNext: { image in
+                    personList.append(Person(person: student.person, image: image))
+                    self.students.accept(personList)
+                }).disposed(by: self.disposeBag)
+        }
+    }
 }
