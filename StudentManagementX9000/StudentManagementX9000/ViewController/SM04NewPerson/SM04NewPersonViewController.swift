@@ -23,7 +23,7 @@ class SM04NewPersonViewController: BaseViewController {
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var mailTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
-    
+
     let viewModel = SM04NewPersonViewModel()
     let disposeBag = DisposeBag()
 
@@ -33,23 +33,22 @@ class SM04NewPersonViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if viewModel.mode.value == .update, let student = viewModel.studentFacePerson.value {
-            studentNameTextField.text = student.name
-            studentNameTextField.text = student.name
-            studentNameTextField.text = student.name
-            studentNameTextField.text = student.name
-
-            viewModel.name.accept(student.name)
+        if viewModel.mode.value == .update, let student = viewModel.student.value {
+            studentNameTextField.text   = student.studentName
+            studentNameTextField.sendActions(for: .valueChanged)
+            idTextField.text            = student.studentId
+            idTextField.sendActions(for: .valueChanged)
+            mailTextField.text          = student.studentMail
+            mailTextField.sendActions(for: .valueChanged)
+            phoneTextField.text         = student.studentPhone
+            phoneTextField.sendActions(for: .valueChanged)
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if viewModel.mode.value == .update {
-            studentNameTextField.isUserInteractionEnabled = false
-            phoneTextField.isUserInteractionEnabled = false
             idTextField.isUserInteractionEnabled = false
-            mailTextField.isUserInteractionEnabled = false
         }
     }
 
@@ -122,18 +121,14 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
-        if viewModel.mode.value == .new {
-            viewModel.createStudent(complete: {
-                self.save()
-            })
-        } else {
-            save()
-        }
+        viewModel.createStudent(complete: {
+            self.save()
+        })
     }
 
     private func save() {
         ProgressHelper.shared.show()
-        guard let student = viewModel.studentFacePerson.value else {
+        guard let studentFaceModel = viewModel.studentFacePerson.value else {
             ProgressHelper.shared.hide()
             return
         }
@@ -144,7 +139,7 @@ class SM04NewPersonViewController: BaseViewController {
             }, onCompleted: { [weak self] in
                 guard let self = self else { return }
                 FaceApiHelper.shared.updatePerson(with: self.viewModel.name.value,
-                                                  of: student)
+                                                  of: studentFaceModel)
                     .subscribe(onNext: { () in
                         ProgressHelper.shared.hide()
                         self.navigationController?.popViewController(animated: true)

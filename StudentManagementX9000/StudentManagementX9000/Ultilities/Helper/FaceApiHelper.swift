@@ -333,7 +333,8 @@ extension FaceApiHelper {
                                                         return
                                                     }
                                                     var currentList = self.students.value
-                                                    guard let indexPath = currentList.firstIndex(of: person),
+                                                    guard let indexPath = currentList.map({$0.personId})
+                                                        .firstIndex(of: person.personId),
                                                         let newPerson = newPerson else {
                                                             let errorTemp = NSError(domain: "nil person",
                                                                                     code: 2,
@@ -373,6 +374,44 @@ extension FaceApiHelper {
             return Disposables.create()
         }
     }
+    
+    func getPersonFromServer(with personId: String?) -> Observable<MPOPerson?> {
+        return Observable.create { [weak self] observable -> Disposable in
+            guard let self = self else {
+                let errorTemp = NSError(domain: "no self", code: 404, userInfo: nil)
+                observable.onError(errorTemp)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            guard let personId = personId else {
+                observable.onNext(nil)
+                observable.onCompleted()
+                return Disposables.create()
+            }
+            self.client?
+                .getPersonWithLargePersonGroupId(FaceApi.studentGroupId,
+                                                 personId: personId,
+                                                 completionBlock: { (person, error) in
+                                                    if let error = error {
+                                                        observable.onNext(nil)
+                                                        observable.onCompleted()
+                                                        print("error: \(error.localizedDescription)")
+                                                        return
+                                                    }
+                                                    guard let person = person else {
+                                                        observable.onNext(nil)
+                                                        observable.onCompleted()
+                                                        return
+                                                    }
+                                                    observable.onNext(person)
+                                                    observable.onCompleted()
+                                                    
+                                                    
+                })
+            return Disposables.create()
+        }
+    }
+
 
     private func getPerson(with personId: String) -> MPOPerson? {
         let index = students.value.map({$0.personId}).firstIndex(of: personId)

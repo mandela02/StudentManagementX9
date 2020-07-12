@@ -13,7 +13,7 @@ import RxDataSources
 import ProjectOxfordFace
 
 struct Person {
-    let person: MPOPerson
+    let person: Student
     let image: UIImage
 }
 
@@ -36,35 +36,23 @@ class SM03TrainGroupViewModel {
     private let disposeBag = DisposeBag()
 
     init() {
-        initPersonList()
+        initObserverse()
     }
-
-    private func initPersonList() {
-        FaceApiHelper.shared.students.subscribe(onNext: { [weak self] studentFaceModels in
-            guard let self = self else { return }
+    private func initObserverse() {
+        FirestoreHelper.shared.startListening { (students) in
             var personList: [Person] = []
-            guard studentFaceModels.count != 0 else {
-                self.students.accept(personList)
-                return
-            }
-            for studentFaceModel in studentFaceModels {
-                FirestoreHelper
-                    .shared
-                    .getStudent(faceID: studentFaceModel.personId)
-                    .subscribe(onNext: { student in
-                        StorageHelper
-                            .getAvatar(from: student.studentId)
-                            .subscribe(onNext: { image in
-                            personList.append(Person(person: studentFaceModel, image: image))
-                            self.students.accept(personList)
-                        }).disposed(by: self.disposeBag)
+            for student in students {
+                StorageHelper
+                    .getAvatar(from: student.studentId)
+                    .subscribe(onNext: { image in
+                        personList.append(Person(person: student, image: image))
+                        self.students.accept(personList)
                     }).disposed(by: self.disposeBag)
             }
-        }).disposed(by: disposeBag)
-
-        students
-            .map({[StudentSectionModel(header: "", items: $0)]})
-            .bind(to: studensList)
-            .disposed(by: disposeBag)
+            self.students
+                .map({[StudentSectionModel(header: "", items: $0)]})
+                .bind(to: self.studensList)
+                .disposed(by: self.disposeBag)
+        }
     }
 }

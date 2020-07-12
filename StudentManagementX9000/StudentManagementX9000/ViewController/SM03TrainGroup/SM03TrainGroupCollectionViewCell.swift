@@ -15,7 +15,7 @@ class SM03TrainGroupCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageHeightConstraints: NSLayoutConstraint!
 
     func configureCell(with person: Person) {
-        nameLabel.text = person.person.name
+        nameLabel.text = person.person.studentName
         imageView.image = person.image
         self.addBorders(edges: .all, color: .black)
         imageHeightConstraints.constant = self.frame.size.height - 30

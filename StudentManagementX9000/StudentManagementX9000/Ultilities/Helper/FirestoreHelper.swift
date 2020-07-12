@@ -58,14 +58,12 @@ class FirestoreHelper {
                           StudentFirestore.studentName: student.studentName,
                           StudentFirestore.studentFaceId: student.studentFaceId],
                          merge: true) { error in
-                            
                             if let error = error {
                                 print("error \(error.localizedDescription)")
                                 observer.onError(error)
                                 observer.onCompleted()
                                 return
                             }
-                            
 //                            let dispatchGroup = DispatchGroup()
 //                            for studentClass in student.studentClasses {
 //                                dispatchGroup.enter()
@@ -186,11 +184,11 @@ class FirestoreHelper {
 
 // listen to student change
 extension FirestoreHelper {
-    func startListening(_ complete: @escaping (Student, DocumentChangeStatus) -> Void) {
+    func startListening(_ complete: @escaping ([Student]) -> Void) {
         stopListening()
         query = baseQuery()
-        listening { data, status in
-            complete(data, status)
+        listening { data in
+            complete(data)
         }
     }
 
@@ -203,7 +201,7 @@ extension FirestoreHelper {
             .collection(StudentFirestore.studentCollectionName)
     }
 
-    private func listening(_ complete: @escaping (Student, DocumentChangeStatus) -> Void) {
+    private func listening(_ complete: @escaping ([Student]) -> Void) {
         guard let query = query else { return }
         stopListening()
         listener = query
@@ -213,17 +211,7 @@ extension FirestoreHelper {
                     print("Error retreiving snapshot: \(error!)")
                     return
                 }
-                for difference in snapshot.documentChanges {
-                    let document = difference.document.data()
-                    let data = self.getStudentData(from: document)
-                    if difference.type == .added {
-                        complete(data, .added)
-                    } else if difference.type == .modified {
-                        complete(data, .edited)
-                    } else if difference.type == .removed {
-                        complete(data, .deleted)
-                    }
-                }
+                complete(snapshot.documents.map({self.getStudentData(from: $0.data())}))
         }
     }
 

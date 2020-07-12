@@ -32,7 +32,7 @@ extension ImageSectionModel: SectionModelType {
 
 class SM04NewPersonViewModel {
     let studentFacePerson: BehaviorRelay<MPOPerson?> = BehaviorRelay(value: nil)
-
+    let student: BehaviorRelay<Student?> = BehaviorRelay(value: nil)
     let mode: BehaviorRelay<Mode> = BehaviorRelay(value: .new)
     let name: BehaviorRelay<String> = BehaviorRelay(value: "")
     let id: BehaviorRelay<String> = BehaviorRelay(value: "")
@@ -46,31 +46,45 @@ class SM04NewPersonViewModel {
     private var originalImageList: [UIImage] = []
 
     var isNameValid: Observable<Bool> {
-        return Observable.combineLatest(name, id).map({$1 != "" && $0 != ""})
+        return Observable.combineLatest(name, id).map({!$1.isEmpty && !$0.isEmpty})
     }
 
     init() {
         listImage
             .map({[ImageSectionModel(header: "", items: $0)]}).bind(to: listImageSectionModel)
             .disposed(by: disposeBag)
-//        listImage.accept([UIImage(named: "emptyAvatar")!])
         initData()
     }
 
     func initData() {
-        mode.subscribe(onNext: { mode in
+        mode.subscribe(onNext: { [weak self] mode in
+            guard let self = self else { return }
             switch mode {
             case .new:
                 break
             case .update:
-                guard let student = self.studentFacePerson.value else {
+                guard let student = self.student.value else {
                     return
                 }
-                StorageHelper.getAllImage(of: student.personId).subscribe(onNext: { images in
+                StorageHelper.getAllImage(of: student.studentId).subscribe(onNext: { images in
                     self.listImage.accept(images)
                     self.originalImageList = images
                 }).disposed(by: self.disposeBag)
             }
+        }).disposed(by: disposeBag)
+
+        student.subscribe(onNext: {[weak self] student in
+            guard let self = self, let student = student else { return }
+
+            self.name.accept(student.studentName)
+            self.id.accept(student.studentId)
+            self.phone.accept(student.studentPhone)
+            self.mail.accept(student.studentMail)
+
+            FaceApiHelper.shared
+                .getPersonFromServer(with: student.studentFaceId)
+                .bind(to: self.studentFacePerson)
+                .disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)
     }
 
