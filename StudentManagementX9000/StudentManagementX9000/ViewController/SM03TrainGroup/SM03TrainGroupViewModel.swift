@@ -39,7 +39,7 @@ class SM03TrainGroupViewModel {
         initObserverse()
     }
     private func initObserverse() {
-        FirestoreHelper.shared.listenToChange { (students) in
+        FirestoreHelper.shared.startListening { (students) in
             var personList: [Person] = []
             if students.isEmpty {
                 self.students.accept([])

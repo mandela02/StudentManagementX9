@@ -74,12 +74,12 @@ extension UIView {
     func removeAllSubviews() {
         self.subviews.forEach({ $0.removeFromSuperview() })
     }
-    
+
     func setBorderForView() {
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
     }
-    
+
     func setCurveForView(radius: CGFloat) {
         setBorderForView()
         setConner(radius: radius)

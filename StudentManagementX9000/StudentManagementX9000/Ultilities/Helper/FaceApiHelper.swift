@@ -374,7 +374,7 @@ extension FaceApiHelper {
             return Disposables.create()
         }
     }
-    
+
     func getPersonFromServer(with personId: String?) -> Observable<MPOPerson?> {
         return Observable.create { [weak self] observable -> Disposable in
             guard let self = self else {
@@ -405,13 +405,10 @@ extension FaceApiHelper {
                                                     }
                                                     observable.onNext(person)
                                                     observable.onCompleted()
-                                                    
-                                                    
                 })
             return Disposables.create()
         }
     }
-
 
     private func getPerson(with personId: String) -> MPOPerson? {
         let index = students.value.map({$0.personId}).firstIndex(of: personId)

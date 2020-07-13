@@ -91,9 +91,10 @@ extension SM02PhotoViewController {
         personListTableView.rx.itemSelected.subscribe(onNext: { [weak self] index in
             guard let self = self else { return }
             self.personListTableView.deselectRow(at: index, animated: true)
+            let student = self.viewModel.students.value[index.item]
+            if student.result.confidence == 0.0 { return }
             let newPersonViewController = SM04NewPersonViewController.instantiateFromStoryboard()
-            let student = self.viewModel.students.value[index.item].student
-            newPersonViewController.viewModel.student.accept(student)
+            newPersonViewController.viewModel.student.accept(student.student)
             newPersonViewController.viewModel.mode.accept(.update)
             self.pushViewController(newPersonViewController)
         }).disposed(by: disposeBag)

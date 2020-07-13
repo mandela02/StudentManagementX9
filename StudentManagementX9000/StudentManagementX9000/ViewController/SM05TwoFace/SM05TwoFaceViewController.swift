@@ -32,6 +32,7 @@ class SM05TwoFaceViewController: BaseViewController {
         imageCollectionView.dataSource = self
         backGroundView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         titleLabel.text = "Choose your face!?"
+        confirmButton.setTitle("Select", for: .normal)
     }
 
     @IBAction func confirmButtonPressed(_ sender: Any) {
