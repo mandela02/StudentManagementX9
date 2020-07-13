@@ -120,6 +120,45 @@ class FirestoreHelper {
         }
     }
 
+    func getStudentClassStatus(of student: Student) -> Observable<[StudentClassInformation]?> {
+        return Observable.create { [weak self] observer -> Disposable in
+            guard let self = self else {
+                observer.onNext(nil)
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.database
+                .collection(StudentFirestore.studentCollectionName)
+                .document(student.studentId)
+                .collection(StudentFirestore.studentClassesCollectionName)
+                .addSnapshotListener { (snapshotListener, error) in
+                    if let error = error {
+                        observer.onNext(nil)
+                        observer.onError(error)
+                        observer.onCompleted()
+                        return
+                    }
+                    observer.onNext(snapshotListener?.documents.map({self.getStudentClassData(from: $0.data())}))
+                    observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
+    func getStudentClassData(from document: [String: Any]) -> StudentClassInformation {
+        guard let studentClassId = document[StudentFirestore.studentClassId] as? String,
+            let studentStatus = document[StudentFirestore.studentStatus] as? Bool,
+            let namstudentFinalScoree = document[StudentFirestore.studentFinalScore] as? Double,
+            let studentMidTermScore = document[StudentFirestore.studentMidTermScore] as? Double
+        else {
+                return StudentClassInformation()
+        }
+        return StudentClassInformation(classId: studentClassId,
+                                       status: studentStatus,
+                                       midTermScore: studentMidTermScore,
+                                       finalScore: namstudentFinalScoree)
+    }
+
     func getStudent(studentId: String) -> Observable<Student> {
         return Observable.create {  [weak self] observer -> Disposable in
             guard let self = self else {
@@ -149,7 +188,7 @@ class FirestoreHelper {
             return Disposables.create()
         }
     }
-    
+
     func getStudent(faceID: String) -> Observable<Student> {
         return Observable.create {  [weak self] observer -> Disposable in
             guard let self = self else {
@@ -180,7 +219,6 @@ class FirestoreHelper {
         }
     }
 
-    
     func getAllDocument(_ callback: @escaping ([Student]) -> Void) {
         self.database
             .collection(StudentFirestore.studentCollectionName)
@@ -297,7 +335,8 @@ extension FirestoreHelper {
                           ClassFirestore.classRoom: newClass.classRoom,
                           ClassFirestore.classTeacher: newClass.classTeacher,
                           ClassFirestore.classTestId: newClass.classTestId,
-                          ClassFirestore.classLesson: newClass.classLesson],
+                          ClassFirestore.midTermDate: DateHelper.getTimeStamp(from: newClass.midTermDate),
+                          ClassFirestore.finalDate: DateHelper.getTimeStamp(from: newClass.finalDate)],
                          merge: true) { error in
                             if let error = error {
                                 observer.onError(error)
@@ -334,6 +373,37 @@ extension FirestoreHelper {
                             }
                             observer.onNext(())
                             observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+}
+
+extension FirestoreHelper {
+    // check is data exist if going to add new student
+    func checkIdIsExist(studentID: String) -> Observable<Bool> {
+        return Observable.create {  [weak self] observer -> Disposable in
+            guard let self = self else {
+                observer.onNext(false)
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.database
+            .collection(StudentFirestore.studentCollectionName)
+                .whereField(StudentFirestore.studentId, isEqualTo: studentID)
+                .getDocuments { (snapShot, error) in
+                    if let error = error {
+                        observer.onNext(false)
+                        observer.onCompleted()
+                        return
+                    }
+                    guard let data = snapShot?.documents.first?.data() else {
+                        observer.onNext(false)
+                        observer.onCompleted()
+                        return
+                    }
+                    observer.onNext(true)
+                    observer.onCompleted()
             }
             return Disposables.create()
         }

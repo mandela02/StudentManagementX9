@@ -49,6 +49,8 @@ struct ClassFirestore {
     static let classTeacher = "ClassTeacher"
     static let classLesson = "ClassLesson"
     static let classTestId = "ClassTestID"
+    static let midTermDate = "midTermDate"
+    static let finalDate = "finalDate"
 }
 
 struct TeacherFirestore {

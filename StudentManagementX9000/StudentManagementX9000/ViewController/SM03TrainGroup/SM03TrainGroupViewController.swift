@@ -35,7 +35,7 @@ class SM03TrainGroupViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.refreshData()
+        //viewModel.refreshData()
     }
 
     @IBAction func addPersonButtonPressed(_ sender: Any) {

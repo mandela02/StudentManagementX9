@@ -13,6 +13,7 @@ struct Class {
     var className = ""
     var classRoom = ""
     var classTeacher = ""
-    var classLesson: [String] = []
     var classTestId = ""
+    var midTermDate = Date()
+    var finalDate = Date()
 }

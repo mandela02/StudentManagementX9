@@ -13,4 +13,13 @@ struct StudentClassInformation {
     var studentStatus = true
     var midTermScore = 0.0
     var finalScore = 0.0
+    
+    init() {}
+    
+    init(classId: String, status: Bool, midTermScore: Double, finalScore: Double) {
+        self.classId = classId
+        self.studentStatus = status
+        self.midTermScore = midTermScore
+        self.finalScore = finalScore
+    }
 }

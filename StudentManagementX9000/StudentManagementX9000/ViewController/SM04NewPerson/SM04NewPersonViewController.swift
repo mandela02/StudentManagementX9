@@ -144,7 +144,22 @@ class SM04NewPersonViewController: BaseViewController {
     }
 
     @IBAction func saveButtonPressed(_ sender: Any) {
-        createAndSave()
+        if viewModel.mode.value == .new {
+            FirestoreHelper.shared
+                .checkIdIsExist(studentID: viewModel.id.value)
+                .subscribe(onNext: { isExisting in
+                    if isExisting {
+                        AlertController.shared
+                            .showErrorMessage(message: "This id is already exist")
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    } else {
+                        self.createAndSave()
+                    }
+                }).disposed(by: disposeBag)
+        } else {
+            self.createAndSave()
+        }
     }
 
     func createAndSave() {

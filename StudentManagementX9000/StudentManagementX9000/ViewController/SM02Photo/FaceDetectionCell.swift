@@ -19,7 +19,7 @@ class FaceDetectionCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         faceImageView.setCurveForView(radius: 4.0)

@@ -54,7 +54,7 @@ class SM04NewPersonViewModel {
 
     let isInDeleteMode: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     var deletedImage: [StorageImage] = []
-    
+
     var isNameValid: Observable<Bool> {
         return Observable.combineLatest(name, id).map({!$1.isEmpty && !$0.isEmpty})
     }
@@ -171,7 +171,7 @@ class SM04NewPersonViewModel {
             return Disposables.create()
         }
     }
-    
+
     func select(at indexPath: IndexPath, complete: (Bool) -> Void) {
         var list = croppedList.value
         if croppedList.value.filter({$0.isSelected}).count + 1 == croppedList.value.count {

@@ -15,9 +15,9 @@ struct Student {
     var studentPhone = ""
     var studentFaceId = ""
     var studentClasses: [StudentClassInformation] = []
-    
+
     init() {}
-    
+
     init(id: String, name: String, mail: String, phone: String, faceId: String = "") {
         self.studentId = id
         self.studentName = name

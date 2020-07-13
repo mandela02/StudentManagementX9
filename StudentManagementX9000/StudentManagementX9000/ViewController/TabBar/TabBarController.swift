@@ -44,12 +44,12 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     private func loadItem() {
         let photoViewController = SM02PhotoViewController.instantiateFromStoryboard()
-        let icon1 = UITabBarItem(title: "Test Face Detection",
+        let icon1 = UITabBarItem(title: "Identification",
                                  image: UIImage(named: "someImage.png"),
                                  selectedImage: UIImage(named: "otherImage.png"))
         photoViewController.tabBarItem = icon1
         let trainGroupViewController = SM03TrainGroupViewController.instantiateFromStoryboard()
-        let icon2 = UITabBarItem(title: "Test Group",
+        let icon2 = UITabBarItem(title: "Students",
                                  image: UIImage(named: "someImage.png"),
                                  selectedImage: UIImage(named: "otherImage.png"))
         trainGroupViewController.tabBarItem = icon2
@@ -62,7 +62,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         if viewController.className == SM02PhotoViewController.className {
             self.navigationItem.title = "Identification"
         } else {
-            self.navigationItem.title = "Large Person Group"
+            self.navigationItem.title = "Students"
         }
         return true
     }
