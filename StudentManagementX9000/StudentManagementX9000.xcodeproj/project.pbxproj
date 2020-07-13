@@ -14,6 +14,7 @@
 		843D375C2469C1D00001137E /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375B2469C1D00001137E /* Class.swift */; };
 		843D375E2469C27D0001137E /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375D2469C27D0001137E /* Teacher.swift */; };
 		843D37602469C2B80001137E /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D375F2469C2B80001137E /* FirestoreHelper.swift */; };
+		8469A27724BB8BE100A060C5 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8469A27624BB8BE000A060C5 /* AlertController.swift */; };
 		90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */; };
 		90085E50244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */; };
 		90085E54244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */; };
@@ -96,6 +97,7 @@
 		843D375B2469C1D00001137E /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
 		843D375D2469C27D0001137E /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
 		843D375F2469C2B80001137E /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
+		8469A27624BB8BE000A060C5 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		90085E4D244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupViewModel.swift; sourceTree = "<group>"; };
 		90085E4F244E05A5007CAFF1 /* SM03TrainGroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM03TrainGroupCollectionViewCell.swift; sourceTree = "<group>"; };
 		90085E53244E0AD9007CAFF1 /* SM04NewPersionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SM04NewPersionCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				90A4C15D2445FF9E00BDA555 /* Settings.swift */,
 				90A4C15C2445FF9D00BDA555 /* Strings.swift */,
 				90A4C15E2445FF9E00BDA555 /* Constants.swift */,
+				8469A27624BB8BE000A060C5 /* AlertController.swift */,
 			);
 			path = Ultilities;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				90085E4E244E01A6007CAFF1 /* SM03TrainGroupViewModel.swift in Sources */,
 				9023A7D3244B545000145CC7 /* FaceApiHelper.swift in Sources */,
 				90A4C174244600A500BDA555 /* NSObject+Extension.swift in Sources */,
+				8469A27724BB8BE100A060C5 /* AlertController.swift in Sources */,
 				90A4C16C2445FFBF00BDA555 /* DateHelper.swift in Sources */,
 				90A4C176244600AE00BDA555 /* UIViewController+Extension.swift in Sources */,
 				90B55DA5244C4C970035D645 /* SM03TrainGroupViewController.swift in Sources */,

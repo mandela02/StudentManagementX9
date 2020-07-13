@@ -19,6 +19,14 @@ class FaceDetectionCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        faceImageView.setCurveForView(radius: 4.0)
+        genderLabel.text = "Not Found"
+        emotionLabel.text = "Not Found"
+        ageLabel.text = "Not Found"
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -27,6 +35,7 @@ class FaceDetectionCell: UITableViewCell {
     }
 
     func configureCell(with model: PhotoCell) {
+        faceImageView.setCurveForView(radius: 4.0)
         guard model.result.confidence != 0.0 else {
             faceImageView.image = model.result.model?.faceImage
             genderLabel.text = "Not Found"

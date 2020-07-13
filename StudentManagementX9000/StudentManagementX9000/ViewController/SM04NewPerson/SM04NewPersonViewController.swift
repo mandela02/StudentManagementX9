@@ -23,12 +23,19 @@ class SM04NewPersonViewController: BaseViewController {
     @IBOutlet weak var mailTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
 
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var mailLabel: UILabel!
+    @IBOutlet weak var phoneLabel: UILabel!
+
     let viewModel = SM04NewPersonViewModel()
     let disposeBag = DisposeBag()
 
     override func configureView() {
         configureCollectionView()
         deleteImageButton()
+        saveButton.setCurveForView(radius: 4.0)
+        pickImageButton.setCurveForView(radius: 4.0)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -49,7 +56,7 @@ class SM04NewPersonViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if viewModel.mode.value == .update {
-            idTextField.isUserInteractionEnabled = false
+            idTextField.isEnabled = false
         }
     }
 
@@ -80,7 +87,7 @@ class SM04NewPersonViewController: BaseViewController {
         viewModel.isInDeleteMode.subscribe(onNext: { [weak self] isInDeleteMode in
             guard let self = self else { return }
             self.studentNameTextField.isEnabled = !isInDeleteMode
-            self.idTextField.isEnabled = !isInDeleteMode
+            self.idTextField.isEnabled = !isInDeleteMode && self.viewModel.mode.value == .new
             self.mailTextField.isEnabled = !isInDeleteMode
             self.phoneTextField.isEnabled = !isInDeleteMode
             self.saveButton.isEnabled = !isInDeleteMode &&
@@ -90,9 +97,13 @@ class SM04NewPersonViewController: BaseViewController {
                 !self.viewModel.id.value.isEmpty &&
                 !self.viewModel.name.value.isEmpty
 
+            self.nameLabel.isEnabled = !isInDeleteMode
+            self.idLabel.isEnabled = !isInDeleteMode
+            self.mailLabel.isEnabled = !isInDeleteMode
+            self.phoneLabel.isEnabled = !isInDeleteMode
+
             self.navigationItem.rightBarButtonItem?.title = isInDeleteMode ? "Delete" : ""
             self.navigationItem.rightBarButtonItem?.isEnabled = isInDeleteMode
-    
             }).disposed(by: disposeBag)
     }
 
@@ -198,7 +209,15 @@ class SM04NewPersonViewController: BaseViewController {
         let touchPoint = gesture.location(in: self.imageCollectionView)
         if let indexPath = imageCollectionView.indexPathForItem(at: touchPoint) {
             viewModel.isInDeleteMode.accept(true)
-            self.viewModel.select(at: indexPath)
+            self.viewModel.select(at: indexPath) { canSelect in
+                if !canSelect {
+                    AlertController.shared
+                        .showErrorMessage(message: "Student must have at least 1 image.")
+                        .subscribe()
+                        .disposed(by: self.disposeBag)
+                    viewModel.isInDeleteMode.accept(false)
+                }
+            }
         }
     }
 
@@ -235,7 +254,14 @@ class SM04NewPersonViewController: BaseViewController {
         imageCollectionView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
             guard let self = self else { return }
             if self.viewModel.isInDeleteMode.value {
-                self.viewModel.select(at: indexPath)
+                self.viewModel.select(at: indexPath) { canSelect in
+                    if !canSelect {
+                        AlertController.shared
+                            .showErrorMessage(message: "Student must have at least 1 image.")
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                }
             }
         }).disposed(by: disposeBag)
     }

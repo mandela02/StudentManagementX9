@@ -172,13 +172,20 @@ class SM04NewPersonViewModel {
         }
     }
     
-    func select(at indexPath: IndexPath) {
+    func select(at indexPath: IndexPath, complete: (Bool) -> Void) {
         var list = croppedList.value
         if croppedList.value.filter({$0.isSelected}).count + 1 == croppedList.value.count {
-            list[indexPath.item].isSelected = false
-            croppedList.accept(list)
-            return
+            if list[indexPath.item].isSelected == false {
+                complete(false)
+                return
+            } else {
+                complete(true)
+                list[indexPath.item].isSelected = false
+                croppedList.accept(list)
+                return
+            }
         }
+        complete(true)
         list[indexPath.item].isSelected = !list[indexPath.item].isSelected
         croppedList.accept(list)
     }

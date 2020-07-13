@@ -17,12 +17,12 @@ class SM04NewPersionCollectionViewCell: UICollectionViewCell {
         imageView.image = image.image
         imageWidthConstraints.constant = self.frame.size.height
         if image.isSelected {
-            imageView.addBorders(edges: .all,
-                                 color: .red,
-                                 inset: 0,
-                                 thickness: 5)
+            self.layer.borderColor = UIColor.red.cgColor
+            self.layer.borderWidth = 5
         } else {
-            imageView.removeAllSubviews()
+            self.layer.borderColor = UIColor.clear.cgColor
+            self.layer.borderWidth = 0
         }
+        self.setConner(radius: 4.0)
     }
 }

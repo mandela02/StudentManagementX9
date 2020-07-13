@@ -60,14 +60,20 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqs-7i-AoD">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="50"/>
-                                        <state key="normal" title="Pick Image"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Pick Image">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="pickImageButtonPressed:" destination="ROd-2e-t6f" eventType="touchUpInside" id="4jq-g7-og3"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcd-Kc-ucA">
                                         <rect key="frame" x="207" y="0.0" width="187" height="50"/>
-                                        <state key="normal" title="Save"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="saveButtonPressed:" destination="ROd-2e-t6f" eventType="touchUpInside" id="eFL-EW-fQq"/>
                                         </connections>
@@ -183,9 +189,13 @@
                         <viewLayoutGuide key="safeArea" id="3Km-nO-3dv"/>
                     </view>
                     <connections>
+                        <outlet property="idLabel" destination="h6n-26-KY2" id="9vQ-wV-xTA"/>
                         <outlet property="idTextField" destination="w3e-aQ-02J" id="4Jv-NY-w3s"/>
                         <outlet property="imageCollectionView" destination="KQK-Yj-C6P" id="O84-9C-6FN"/>
+                        <outlet property="mailLabel" destination="zix-Cq-339" id="TAU-GS-Z60"/>
                         <outlet property="mailTextField" destination="FiS-je-5IU" id="Z6r-KY-aUW"/>
+                        <outlet property="nameLabel" destination="WR9-M0-qnS" id="ghT-eL-XGR"/>
+                        <outlet property="phoneLabel" destination="7vk-PO-pQ6" id="JwS-58-4mp"/>
                         <outlet property="phoneTextField" destination="51N-zE-9ja" id="rpn-qY-mcx"/>
                         <outlet property="pickImageButton" destination="Uqs-7i-AoD" id="Hfd-gT-ftr"/>
                         <outlet property="saveButton" destination="bcd-Kc-ucA" id="CGg-iV-zcS"/>

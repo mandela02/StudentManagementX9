@@ -26,6 +26,8 @@ class SM03TrainGroupViewController: BaseViewController {
 
     override func configureView() {
         configureCollectionView()
+        saveButton.setCurveForView(radius: 4.0)
+        addPersonButton.setCurveForView(radius: 4.0)
     }
 
     override func configureObservers() {

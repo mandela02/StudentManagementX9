@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3Nk-to-vnj">
-                                <rect key="frame" x="10" y="54" width="394" height="758"/>
+                                <rect key="frame" x="10" y="54" width="394" height="738"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="itj-2b-rMk">
                                     <size key="itemSize" width="50" height="50"/>
@@ -68,24 +68,30 @@
                                 </cells>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="qcL-pe-BVn">
-                                <rect key="frame" x="10" y="822" width="394" height="50"/>
+                                <rect key="frame" x="10" y="802" width="394" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJK-DU-LJK">
                                         <rect key="frame" x="0.0" y="0.0" width="192" height="50"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="ux7-oC-9Wr"/>
                                         </constraints>
-                                        <state key="normal" title="NewPerson"/>
+                                        <state key="normal" title="NewPerson">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="addPersonButtonPressed:" destination="nL4-DE-hYV" eventType="touchUpInside" id="2IJ-Kr-Bt9"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0O-qR-ziO">
                                         <rect key="frame" x="202" y="0.0" width="192" height="50"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="lCN-jC-KUN"/>
                                         </constraints>
-                                        <state key="normal" title="Save"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="saveButtonPressed:" destination="nL4-DE-hYV" eventType="touchUpInside" id="ERN-WZ-QHb"/>
                                         </connections>
@@ -96,7 +102,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="qcL-pe-BVn" firstAttribute="top" secondItem="3Nk-to-vnj" secondAttribute="bottom" constant="10" id="Nff-UX-AI8"/>
-                            <constraint firstItem="qcL-pe-BVn" firstAttribute="bottom" secondItem="Ner-mY-zgl" secondAttribute="bottom" constant="10" id="Pn8-VP-9Wy"/>
+                            <constraint firstItem="qcL-pe-BVn" firstAttribute="bottom" secondItem="Ner-mY-zgl" secondAttribute="bottom" constant="-10" id="Pn8-VP-9Wy"/>
                             <constraint firstItem="3Nk-to-vnj" firstAttribute="leading" secondItem="Ner-mY-zgl" secondAttribute="leading" constant="10" id="ahT-Ui-g92"/>
                             <constraint firstItem="Ner-mY-zgl" firstAttribute="trailing" secondItem="qcL-pe-BVn" secondAttribute="trailing" constant="10" id="fBo-vQ-h6z"/>
                             <constraint firstItem="3Nk-to-vnj" firstAttribute="top" secondItem="Ner-mY-zgl" secondAttribute="top" constant="10" id="fZ1-1A-aRh"/>

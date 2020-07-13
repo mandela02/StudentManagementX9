@@ -17,7 +17,10 @@ class SM03TrainGroupCollectionViewCell: UICollectionViewCell {
     func configureCell(with person: Person) {
         nameLabel.text = person.person.studentName
         imageView.image = person.image
-        self.addBorders(edges: .all, color: .black)
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderWidth = 1
+        self.setConner(radius: 4.0)
+        imageView.setConner(radius: 4.0)
         imageHeightConstraints.constant = self.frame.size.height - 30
 
     }

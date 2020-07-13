@@ -32,11 +32,13 @@ class SM02PhotoViewController: BaseViewController {
     }
 
     override func configureView() {
-        openCameraButton.setTitle("open Camera", for: .normal)
-        openGalleryButton.setTitle("open Gallery", for: .normal)
+        openCameraButton.setTitle("Camera", for: .normal)
+        openGalleryButton.setTitle("Gallery", for: .normal)
         noImageLabel.text = "No Image Selected"
-        noImageLabel.setBorder(color: .black, thickness: 1.0)
-        personListTableView.setBorder(color: .black, thickness: 1.0)
+        noImageLabel.setCurveForView(radius: 4.0)
+        personListTableView.setCurveForView(radius: 4.0)
+        openGalleryButton.setCurveForView(radius: 4.0)
+        openCameraButton.setCurveForView(radius: 4.0)
         self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
